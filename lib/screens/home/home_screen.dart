@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:live_indicator/live_indicator.dart';
+import 'package:seek_reunite/constants/constant_fonts.dart';
+import 'package:seek_reunite/constants/constant_size.dart';
+import 'package:seek_reunite/constants/contant_colors.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var nameList = [ "Amogh", "Aditya", "Jayneel", "Amol", "Anurag", "Vikas", "Deepinder",];
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            DrawerHeader(child: Container(
+              color: ConstantColors.primaryColor,
+            ))
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -13,8 +32,150 @@ class HomeScreen extends StatelessWidget {
             label: "Home",
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.camera),
+            label: "Found",
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: "Profile",
+          ),
+        ],
+      ),
+      appBar: AppBar(
+        title: const Text("Welcome"),
+        leading: InkWell(
+          child: const Icon(
+            Icons.menu,
+          ),
+          onTap: () => Scaffold.of(context).openDrawer(),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildStatistics(),
+              SizeConstant.getHeightSpace(20),
+              const Text(
+                "Recent Complaints",
+                style: TextStyle(fontSize: 16, fontFamily: ConstantFonts.poppinsBold),
+              ),
+              SizeConstant.getHeightSpace(20),
+              ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,itemBuilder: (context, index){
+
+                return ListTile(
+                  leading: Image.asset("assets/images/kid.png",width: 30,
+                    height: 30,),
+                  title: Text(nameList[index], style: const TextStyle(fontFamily: ConstantFonts.poppinsBold, fontSize: 16, color: ConstantColors.blackColor),),
+                  subtitle: const Text("Bhatinda", style: TextStyle(fontFamily: ConstantFonts.poppinsRegular, fontSize: 14, color: ConstantColors.lighGreyColor),),
+                );
+              }, separatorBuilder: (context, index) => const Divider(), itemCount: nameList.length)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container buildStatistics() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: ConstantColors.lighGreyColor),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+           InkWell(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Text(
+                      "Today's Statistics",
+                      style:
+                          TextStyle(fontSize: 18, color: ConstantColors.blackColor, fontFamily: ConstantFonts.poppinsBold),
+                    ),
+                    SizeConstant.getWidthSpace(6),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: ConstantColors.whiteColor,
+                      ),
+                      child: Row(
+                        children: [
+                          LiveIndicator(color: Colors.red.shade700,
+                              radius: 2.5,
+                              spreadRadius: 5,
+                              spreadDuration: const Duration(seconds: 1),
+                              waitDuration: const Duration(seconds: 1)),
+                          const Text("LIVE", style: TextStyle(fontSize: 14, fontFamily: ConstantFonts.poppinsBold, color: ConstantColors.lighGreyColor),)
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  color: ConstantColors.lighGreyColor,
+                )
+              ],
+            ),
+          ),
+          SizeConstant.getHeightSpace(10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkWell(
+                    child: Container(
+                        padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFFFF8F5),
+                            border: Border.all(color: const Color(0xFFD7E3FF)),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Image.asset(
+                          "assets/images/kid.png",
+                          width: 60,
+                          height: 60,
+                        )),
+                    onTap: () {},
+                  ),
+                  const Text("Kids"),
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkWell(
+                    child: Container(
+                        padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFFFF8F5),
+                            border: Border.all(color: const Color(0xFFD7E3FF)),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Image.asset(
+                          "assets/images/adult.png",
+                          width: 60,
+                          height: 60,
+                        )),
+                    onTap: () {},
+                  ),
+                  const Text("Adults"),
+                ],
+              ),
+            ],
           ),
         ],
       ),

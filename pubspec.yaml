@@ -39,6 +39,7 @@ dependencies:
   http: ^1.2.0
   lottie: ^3.0.0
   flutter_native_splash: ^2.0.2
+  live_indicator: ^0.0.4
 
 dev_dependencies:
   flutter_test:
