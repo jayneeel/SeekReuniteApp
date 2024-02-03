@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:seek_reunite/screens/home/home_screen.dart';
 
 import '../../constants/constant_fonts.dart';
 import '../../constants/constant_size.dart';
@@ -35,7 +37,9 @@ class SignUpScreen extends StatelessWidget {
               SizeConstant.getHeightSpace(10),
               MyTextField(controller: passwordController, hintText: "password", obscureText: true, inputType: TextInputType.visiblePassword,),
               SizeConstant.getHeightSpace(20),
-              const CustomButton(text: "Sign Up")
+              CustomButton(text: "Sign Up", onTap: (){
+                Get.to(const HomeScreen());
+              },)
             ],
           ),
         ),
