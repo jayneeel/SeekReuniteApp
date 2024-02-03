@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/constants/contant_colors.dart';
-import 'package:seek_reunite/screens/auth/sign_in_screen.dart';
-import 'package:seek_reunite/screens/auth/sign_up_screen.dart';
+import 'package:seek_reunite/presentation/auth/sign_in_screen.dart';
+import 'package:seek_reunite/presentation/auth/sign_up_screen.dart';
 import 'package:seek_reunite/widgets/custom_button.dart';
 import 'package:get/get.dart';
 

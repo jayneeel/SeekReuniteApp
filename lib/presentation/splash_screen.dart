@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
-import 'package:seek_reunite/screens/auth/navigation_screen.dart';
+
+import 'auth/navigation_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

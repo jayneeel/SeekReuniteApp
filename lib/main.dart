@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
-import 'package:seek_reunite/screens/splash_screen.dart';
+import 'package:seek_reunite/presentation/splash_screen.dart';
 import 'package:get/get.dart';
 
 void main() {

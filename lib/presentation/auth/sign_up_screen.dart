@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:seek_reunite/screens/home/home_screen.dart';
+
 
 import '../../constants/constant_fonts.dart';
 import '../../constants/constant_size.dart';
 import '../../constants/contant_colors.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
+import '../home/home_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
