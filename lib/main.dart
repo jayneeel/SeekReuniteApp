@@ -14,9 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: ConstantFonts.poppinsRegular
-      ),
+      theme: ThemeData(fontFamily: ConstantFonts.poppinsRegular),
       home: const SplashScreen(),
     );
   }
