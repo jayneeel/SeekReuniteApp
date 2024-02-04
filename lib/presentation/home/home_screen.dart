@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:live_indicator/live_indicator.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/constants/contant_colors.dart';
+import 'package:seek_reunite/presentation/home/widgets/bottom_nav.dart';
+import 'package:seek_reunite/presentation/home/widgets/side_drawer.dart';
 
-import '../profile/profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,46 +19,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            DrawerHeader(child: Container(
-              color: ConstantColors.primaryColor,
-            ))
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index){
-          if(index == 0){
-          }else if(index == 1){
-
-          }else{
-            Get.to(const ProfileScreen());
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.camera),
-            label: "Found",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile",
-          ),
-        ],
+      drawer: const SideNavDrawer(),
+      bottomNavigationBar: const BottomNavBar(),
+      floatingActionButton: FloatingActionButton(
+        isExtended: true, onPressed: () {  },
+        child: const Icon(Icons.receipt_rounded),
+        tooltip: "Complaint",
       ),
       appBar: AppBar(
         title: const Text("Welcome"),
-        leading: InkWell(
-          child: const Icon(
-            Icons.menu,
-          ),
-          onTap: () => Scaffold.of(context).openDrawer(),
+        leading: const Icon(
+          Icons.menu,
         ),
       ),
       body: Padding(
@@ -71,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizeConstant.getHeightSpace(20),
               const Text(
                 "Recent Complaints",
-                style: TextStyle(fontSize: 16, fontFamily: ConstantFonts.poppinsBold),
+                style: TextStyle(fontSize: 20, fontFamily: ConstantFonts.poppinsBold),
               ),
               SizeConstant.getHeightSpace(20),
               ListView.separated(
