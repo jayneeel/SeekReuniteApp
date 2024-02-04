@@ -11,6 +11,7 @@ class SideNavDrawer extends StatelessWidget {
       child: ListView(
         children: [
           DrawerHeader(
+            
               padding: EdgeInsets.zero,
               child: Container(
             color: ConstantColors.primaryColor,

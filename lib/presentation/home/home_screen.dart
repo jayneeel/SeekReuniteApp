@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   leading: Image.asset("assets/images/kid.png",width: 30,
                     height: 30,),
                   title: Text(nameList[index], style: const TextStyle(fontFamily: ConstantFonts.poppinsBold, fontSize: 16, color: ConstantColors.blackColor),),
-                  subtitle: const Text("Bhatinda", style: TextStyle(fontFamily: ConstantFonts.poppinsRegular, fontSize: 14, color: ConstantColors.lighGreyColor),),
+                  subtitle: const Text("Bhatinda", style: TextStyle(fontFamily: ConstantFonts.poppinsRegular, fontSize: 14, color: ConstantColors.lightGreyColor),),
                 );
               }, separatorBuilder: (context, index) => const Divider(), itemCount: nameList.length)
             ],
@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: ConstantColors.lighGreyColor),
+        border: Border.all(color: ConstantColors.lightGreyColor),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               spreadRadius: 5,
                               spreadDuration: const Duration(seconds: 1),
                               waitDuration: const Duration(seconds: 1)),
-                          const Text("LIVE", style: TextStyle(fontSize: 14, fontFamily: ConstantFonts.poppinsBold, color: ConstantColors.lighGreyColor),)
+                          const Text("LIVE", style: TextStyle(fontSize: 14, fontFamily: ConstantFonts.poppinsBold, color: ConstantColors.lightGreyColor),)
                         ],
                       ),
                     ),
@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const Icon(
                   Icons.keyboard_arrow_down_rounded,
-                  color: ConstantColors.lighGreyColor,
+                  color: ConstantColors.lightGreyColor,
                 )
               ],
             ),
