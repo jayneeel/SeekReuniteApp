@@ -1,9 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/constants/contant_colors.dart';
+import 'package:seek_reunite/utils/shared_prefs_helper.dart';
 import 'package:seek_reunite/widgets/custom_button.dart';
 import 'package:seek_reunite/widgets/custom_text_field.dart';
+
+import '../home/screens/home_screen.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -27,11 +32,23 @@ class SignInPage extends StatelessWidget {
               SizeConstant.getHeightSpace(10),
               MyTextField(controller: passwordController, hintText: "password", obscureText: true, inputType: TextInputType.visiblePassword,),
               SizeConstant.getHeightSpace(20),
-              const CustomButton(text: "Sign In")
+              CustomButton(text: "Sign In", onTap: (){
+                signInUser(emailController, passwordController, context);
+
+              })
             ],
           ),
         ),
       ),
     );
+  }
+
+  void signInUser(TextEditingController emailController, TextEditingController passwordController, BuildContext context) async {
+    String email = emailController.text;
+    String password = passwordController.text;
+    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sign In Successful!")));
+    Helper().updateSharedPrefs(email: FirebaseAuth.instance.currentUser!.email, uid: FirebaseAuth.instance.currentUser!.uid, loggedInStatus: true);
+    Get.to(const HomeScreen());
   }
 }

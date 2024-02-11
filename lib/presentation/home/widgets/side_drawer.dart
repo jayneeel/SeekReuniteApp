@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:seek_reunite/constants/constant_fonts.dart';
+import 'package:seek_reunite/presentation/auth/navigation_screen.dart';
 
 import '../../../constants/contant_colors.dart';
+import '../../../utils/shared_prefs_helper.dart';
 
 class SideNavDrawer extends StatelessWidget {
   const SideNavDrawer({super.key});
@@ -14,20 +19,28 @@ class SideNavDrawer extends StatelessWidget {
             padding: EdgeInsets.zero,
             child: Container(
               color: ConstantColors.primaryColor,
-              child: const Column(
+              child:  Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 47, // Adjust size as needed
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: const CircleAvatar(
+                    radius: 50,
+                      backgroundImage: AssetImage("assets/images/navdrawerimg.png"),
+                    ),
                   ),
-                  SizedBox(height: 8),
-                  Text(
-                    ' Ethan Johnson',
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Ethan Johnson',
+                    style: TextStyle(color: Colors.white, fontSize: 14, fontFamily: ConstantFonts.poppinsBold),
                   ),
-                  Text(
+                  const Text(
                     'ethan.johnson@example.com',
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                    style: TextStyle(color: Colors.white, fontSize: 14, fontFamily: ConstantFonts.poppinsRegular),
                   ),
                 ],
               ),
@@ -54,14 +67,15 @@ class SideNavDrawer extends StatelessWidget {
             onTap: () {},
           ),
           const Divider(color: ConstantColors.lightGreyColor),
-          TextButton(
-            onPressed: () {
-              // Handle logout logic here
+          ListTile(
+            onTap: (){
+              FirebaseAuth.instance.signOut();
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sign Out Successfully")));
+              Helper().updateSharedPrefs(email: null, uid: null, loggedInStatus: false);
+              Get.to(() =>  const NavigationScreen());
             },
-            child: const ListTile(
-              leading: Icon(Icons.logout, color: Colors.red),
-              title: Text('Logout', style: TextStyle(color: Colors.red)),
-            ),
+            leading: const Icon(Icons.logout, color: Colors.red),
+            title: const Text('Logout', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),

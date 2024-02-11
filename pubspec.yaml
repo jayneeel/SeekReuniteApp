@@ -38,12 +38,17 @@ dependencies:
   get: ^4.6.6
   http: ^1.2.0
   lottie: ^3.0.0
-  flutter_native_splash: ^2.0.2
   live_indicator: ^0.0.4
+  firebase_core: ^2.25.4
+  firebase_auth: ^4.17.4
+  firebase_storage: ^11.6.5
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_native_splash: ^2.3.10
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -51,6 +56,14 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/images/sr_splash_logo.png
+  android: true
+  ios: true
+  web: false
+  android_12:
+    image: assets/images/sr_splash_logo.png
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -66,7 +79,6 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/animations/
-    - assets/icons/
     - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see

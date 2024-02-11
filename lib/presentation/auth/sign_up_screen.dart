@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -5,9 +6,10 @@ import 'package:get/get.dart';
 import '../../constants/constant_fonts.dart';
 import '../../constants/constant_size.dart';
 import '../../constants/contant_colors.dart';
+import '../../utils/shared_prefs_helper.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
-import '../home/home_screen.dart';
+import '../home/screens/home_screen.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -39,12 +41,22 @@ class SignUpScreen extends StatelessWidget {
               MyTextField(controller: passwordController, hintText: "password", obscureText: true, inputType: TextInputType.visiblePassword,),
               SizeConstant.getHeightSpace(20),
               CustomButton(text: "Sign Up", onTap: (){
-                Get.to(const HomeScreen());
+                signUpUser(nameController, phnoController, emailController, passwordController, context);
               },)
             ],
           ),
         ),
       ),
     );
+  }
+
+  void signUpUser(TextEditingController nameController, TextEditingController phnoController, TextEditingController emailController, TextEditingController passwordController, BuildContext buildContext) async {
+
+    String email = emailController.text;
+    String password = passwordController.text;
+    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+    ScaffoldMessenger.of(buildContext).showSnackBar(const SnackBar(content: Text("Account Created Successfully!")));
+    Helper().updateSharedPrefs(email: FirebaseAuth.instance.currentUser!.email, uid: FirebaseAuth.instance.currentUser!.uid, loggedInStatus: true);
+    Get.to(const HomeScreen());
   }
 }

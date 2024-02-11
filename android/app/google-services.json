@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "878536726247",
+    "project_id": "seek-reunite",
+    "storage_bucket": "seek-reunite.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878536726247:android:894a5f07dee016ea11f442",
+        "android_client_info": {
+          "package_name": "com.example.seek_reunite"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUYESUs0Hsh7UdzIImZ_oSFVavR2vddXM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
