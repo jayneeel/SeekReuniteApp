@@ -6,7 +6,6 @@ import 'package:lottie/lottie.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/presentation/auth/auth_gate.dart';
 
-import 'auth/navigation_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
