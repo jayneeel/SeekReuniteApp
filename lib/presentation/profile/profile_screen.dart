@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:seek_reunite/constants/constant_size.dart';
 
 
 class ProfileScreen extends StatelessWidget {
@@ -7,25 +9,27 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: 40),
+            SizeConstant.getHeightSpace(40),
             const CircleAvatar(
               radius: 70,
               backgroundImage: AssetImage('assets/images/adult.png'),
             ),
-            const SizedBox(height: 20),
-            itemProfile('Name', 'Jayneel Kanungoo', CupertinoIcons.person),
-            const SizedBox(height: 10),
-            itemProfile('Phone', '03107085816', CupertinoIcons.phone),
-            const SizedBox(height: 10),
-            itemProfile('Address', 'abc address, xyz city', CupertinoIcons.location),
-            const SizedBox(height: 10),
-            itemProfile('Email', 'ahadhashmideveloper@gmail.com', CupertinoIcons.mail),
-            const SizedBox(height: 20,),
+            SizeConstant.getHeightSpace(20),
+            itemProfile('Name', 'Jayneel Kanungo', CupertinoIcons.person),
+            SizeConstant.getHeightSpace(10),
+            itemProfile('Phone', '9082642479', CupertinoIcons.phone),
+            SizeConstant.getHeightSpace(10),
+            itemProfile('Address', 'Airoli', CupertinoIcons.location),
+            SizeConstant.getHeightSpace(10),
+            itemProfile('Email', FirebaseAuth.instance.currentUser!.email ?? "", CupertinoIcons.mail),
+            SizeConstant.getHeightSpace(20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(

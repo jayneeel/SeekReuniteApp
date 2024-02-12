@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
+import 'package:seek_reunite/presentation/auth/auth_gate.dart';
 
-import 'auth/navigation_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 4), () => Get.to(() => const NavigationScreen()));
+    Timer(const Duration(seconds: 4), () => Get.to(() => const AuthScreen()));
   }
 
   @override
