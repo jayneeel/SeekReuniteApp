@@ -30,7 +30,7 @@ class SideNavDrawer extends StatelessWidget {
                     ),
                     child: const CircleAvatar(
                     radius: 50,
-                      backgroundImage: AssetImage("assets/images/navdrawerimg.png"),
+                      backgroundImage: AssetImage("assets/images/person.png"),
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -38,9 +38,9 @@ class SideNavDrawer extends StatelessWidget {
                     'Ethan Johnson',
                     style: TextStyle(color: Colors.white, fontSize: 14, fontFamily: ConstantFonts.poppinsBold),
                   ),
-                  const Text(
-                    'ethan.johnson@example.com',
-                    style: TextStyle(color: Colors.white, fontSize: 14, fontFamily: ConstantFonts.poppinsRegular),
+                  Text(
+                    FirebaseAuth.instance.currentUser!.email ?? "",
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ],
               ),
