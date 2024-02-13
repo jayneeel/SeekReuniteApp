@@ -23,13 +23,22 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: const BottomNavBar(),
       floatingActionButton: FloatingActionButton(
         isExtended: true, onPressed: () {  },
-        child: const Icon(Icons.receipt_rounded),
         tooltip: "Complaint",
+        child: const Icon(Icons.receipt_rounded),
       ),
       appBar: AppBar(
         title: const Text("Welcome"),
-        leading: const Icon(
-          Icons.menu,
+        leading: Builder(
+          builder: (context) {
+            return GestureDetector(
+              onTap: (){
+                Scaffold.of(context).openDrawer();
+              },
+              child: const Icon(
+                Icons.menu,
+              ),
+            );
+          }
         ),
       ),
       body: Padding(
