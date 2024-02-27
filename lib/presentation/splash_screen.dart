@@ -6,7 +6,6 @@ import 'package:lottie/lottie.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/presentation/auth/auth_gate.dart';
 
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -15,7 +14,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   @override
   void initState() {
     super.initState();
@@ -26,15 +24,19 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Lottie.asset("assets/animations/handshake.json"),
-            const SizedBox(height: 20,),
-            const Text("Seek Reunite", style: TextStyle(fontFamily: ConstantFonts.poppinsBold, fontSize: 20),),
-          ],
-        )
-      ),
+          child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Lottie.asset("assets/animations/handshake.json"),
+          const SizedBox(
+            height: 20,
+          ),
+          const Text(
+            "Seek Reunite",
+            style: TextStyle(fontFamily: ConstantFonts.poppinsBold, fontSize: 20),
+          ),
+        ],
+      )),
     );
   }
 }
