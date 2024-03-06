@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:seek_reunite/constants/constant_size.dart';
+import 'package:seek_reunite/presentation/profile/controllers/profile_controller.dart';
 
 
 class ProfileScreen extends StatelessWidget {
@@ -9,11 +11,12 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    ProfileController controller = Get.put(ProfileController());
+    controller.getUserData();
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
+        child: Obx(()=> Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizeConstant.getHeightSpace(40),
@@ -22,13 +25,13 @@ class ProfileScreen extends StatelessWidget {
               backgroundImage: AssetImage('assets/images/adult.png'),
             ),
             SizeConstant.getHeightSpace(20),
-            itemProfile('Name', 'Jayneel Kanungo', CupertinoIcons.person),
+            itemProfile('Name', controller.name.value ?? 'Jayneel Kanungo', CupertinoIcons.person),
             SizeConstant.getHeightSpace(10),
-            itemProfile('Phone', '9082642479', CupertinoIcons.phone),
+            itemProfile('Phone', controller.phone.value ?? '9082642479', CupertinoIcons.phone),
             SizeConstant.getHeightSpace(10),
             itemProfile('Address', 'Airoli', CupertinoIcons.location),
             SizeConstant.getHeightSpace(10),
-            itemProfile('Email', FirebaseAuth.instance.currentUser!.email ?? "", CupertinoIcons.mail),
+            itemProfile('Email', controller.email.value ??  "", CupertinoIcons.mail),
             SizeConstant.getHeightSpace(20),
             SizedBox(
               width: double.infinity,
@@ -41,7 +44,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             )
           ],
-        ),
+        )),
       ),
     );
   }

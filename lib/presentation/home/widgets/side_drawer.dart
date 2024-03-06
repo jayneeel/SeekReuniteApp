@@ -68,10 +68,9 @@ class SideNavDrawer extends StatelessWidget {
           ),
           const Divider(color: ConstantColors.lightGreyColor),
           ListTile(
-            onTap: (){
-              FirebaseAuth.instance.signOut();
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sign Out Successfully")));
-              Helper().updateSharedPrefs(email: null, uid: null, loggedInStatus: false);
               Get.to(() =>  const NavigationScreen());
             },
             leading: const Icon(Icons.logout, color: Colors.red),
