@@ -20,6 +20,20 @@ class ComplaintController extends GetxController{
       "lodgedBy": auth.currentUser?.uid
     };
     await db.collection("complaints").doc(now.microsecondsSinceEpoch.toString()).set(complaintDetailsMap);
+    Get.dialog(
+          AlertDialog(
+            title: const Text('Complaint lodged!'),
+            content: Text('Your reference ID is ${now.microsecondsSinceEpoch.toString()}'),
+            actions: [
+              TextButton(
+                child: const Text("Ok"),
+                onPressed: () => Get.back(),
+              ),
+            ],
+          ),
+    );
   }
+
+
 
 }

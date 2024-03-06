@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/presentation/auth/navigation_screen.dart';
+import 'package:seek_reunite/presentation/complaint/my_complaints_screen.dart';
 
 import '../../../constants/contant_colors.dart';
-import '../../../utils/shared_prefs_helper.dart';
 
 class SideNavDrawer extends StatelessWidget {
   const SideNavDrawer({super.key});
@@ -59,7 +59,9 @@ class SideNavDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.person_search_rounded),
             title: const Text('My Complaints'),
-            onTap: () {},
+            onTap: () {
+              Get.to(() =>  const MyComplaintsScreen());
+            },
           ),
           ListTile(
             leading: const Icon(Icons.notifications_none_outlined),
