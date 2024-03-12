@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class Helpers {
@@ -32,5 +33,16 @@ class Helpers {
       }) =>
       DateFormat(format)
           .format((DateTime.tryParse(date ?? "") ?? DateTime.now()).toLocal());
+
+  static Future<List<XFile>> pickImageFromGallery() async {
+    final picker = ImagePicker();
+
+    return await picker.pickMultiImage(requestFullMetadata: true);
+  }
+
+  static Future<XFile?> capturePhoto() async {
+    final picker = ImagePicker();
+    return await picker.pickImage(source: ImageSource.camera);
+  }
 }
 

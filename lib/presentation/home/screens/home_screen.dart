@@ -4,7 +4,7 @@ import 'package:live_indicator/live_indicator.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/constants/contant_colors.dart';
-import 'package:seek_reunite/presentation/complaint/add_complaint_screen.dart';
+import 'package:seek_reunite/presentation/complaint/screens/add_complaint_screen.dart';
 import 'package:seek_reunite/presentation/home/widgets/bottom_nav.dart';
 import 'package:seek_reunite/presentation/home/widgets/side_drawer.dart';
 
@@ -122,12 +122,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                InkWell(
+                GestureDetector(
                   onTap: (){
                     controller.isExpanded.value = !controller.isExpanded.value;
                   },
-                  child: const Icon(
-                    Icons.keyboard_arrow_down_rounded,
+                  child: Icon(
+                    (controller.isExpanded.value) ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down_rounded,
                     color: ConstantColors.lightGreyColor,
                     size: 25,
                   ),
@@ -185,16 +185,16 @@ class _HomeScreenState extends State<HomeScreen> {
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("hi"),
-                Text("hi"),
-                Text("hi"),
-                Text("hi"),
-                Text("hi"),
-                Text("hi"),
-                Text("hi"),
-                Text("hi"),
-                Text("hi"),
-                Text("hi"),
+                Row(
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+
+                      ],
+                    )
+                  ],
+                )
               ],)
           ]
         ],

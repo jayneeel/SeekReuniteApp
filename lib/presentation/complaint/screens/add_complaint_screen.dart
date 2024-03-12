@@ -3,13 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:seek_reunite/presentation/complaint/controller/complaint_controller.dart';
 import 'package:seek_reunite/widgets/custom_button.dart';
 
-import '../../constants/constant_fonts.dart';
-import '../../constants/constant_size.dart';
-import '../../constants/contant_colors.dart';
-import '../../utils/helpers.dart';
+import '../../../constants/constant_fonts.dart';
+import '../../../constants/constant_size.dart';
+import '../../../constants/contant_colors.dart';
+import '../../../utils/helpers.dart';
+import '../widgets/picture_item.dart';
 
 class AddComplaintScreen extends StatefulWidget {
   const AddComplaintScreen({super.key});
@@ -33,7 +35,7 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -183,15 +185,159 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
                 ),
               ),
               SizeConstant.getHeightSpace(12),
+              if (pictures.isEmpty)
+                addPicture()
+              else
+                SizedBox(
+                  height: 84,
+                  child: ListView.builder(
+                    itemCount: pictures.length + 1,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      if (index < pictures.length) {
+                        final p = pictures[index];
+                        return PictureItem(
+                            file: p,
+                            onCancelled: () {
+                              setState(() {
+                                pictures.removeAt(index);
+                              });
+                            });
+                      } else {
+                        if (pictures.length < 4) {
+                          return addPicture();
+                        } else {
+                          SizeConstant.getHeightSpace(0);
+                        }
+                      }
+                      return SizeConstant.getHeightSpace(0);
+                    },
+                  ),
+                ),
               const Spacer(),
               CustomButton(text: "Lodge Complaint", onTap: (){
                 controller.lodgeComplaint(nameController.text, addressController.text, descriptionController.text, DateTime(DateTime.march), int.parse(ageController.text));
               },),
-              SizeConstant.getHeightSpace(12),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget addPicture() => InkWell(
+    onTap: () async {
+      final res = await openBottomSheet("image", context);
+
+      if ((res ?? []).isEmpty) return;
+
+      for (final element in res) {
+        setState(() {
+          pictures.add(File(element.path));
+        });
+      }
+    },
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: ConstantColors.whiteColor,
+        border: Border.all(color: ConstantColors.primaryColor),
+      ),
+      alignment: Alignment.center,
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.camera_alt),
+          Text("  Upload Photos"),
+        ],
+      )
+    ),
+  );
+
+  Future<List<XFile>> openBottomSheet(String type, BuildContext context) async {
+    final res = await showModalBottomSheet(
+      enableDrag: false,
+      context: context,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) => Container(
+        width: double.maxFinite,
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizeConstant.getHeightSpace(20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    final List<XFile> t = [];
+                    if (type == "image") {
+                      t.addAll((await Helpers.pickImageFromGallery()).toList());
+                    }
+                    if (context.mounted) {
+                      Navigator.pop(context, t);
+                    }
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey)),
+                        padding: const EdgeInsets.all(8),
+                        child: const Icon(
+                          Icons.browse_gallery_rounded,
+                          size: 24,
+                        ),
+                      ),
+                      SizeConstant.getHeightSpace(10),
+                      const Text("From Gallery"),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () async {
+                    final List<XFile> t1 = [];
+                    if (type == "image") {
+                      final t = await Helpers.capturePhoto();
+                      if (t != null) {
+                        t1.add(t);
+                      }
+                    }
+                    if (context.mounted) {
+                      Navigator.pop(context, t1);
+                    }
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.grey)),
+                        padding: const EdgeInsets.all(8),
+                        child: const Icon(
+                          Icons.camera_alt_rounded,
+                          size: 24,
+                        ),
+                      ),
+                      SizeConstant.getHeightSpace(10),
+                      const Text("From Camera"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            SizeConstant.getHeightSpace(40),
+          ],
+        ),
+      ),
+    );
+    return res ?? [];
   }
 }

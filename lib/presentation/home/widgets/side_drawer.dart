@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/presentation/auth/navigation_screen.dart';
-import 'package:seek_reunite/presentation/complaint/my_complaints_screen.dart';
+import 'package:seek_reunite/presentation/complaint/screens/my_complaints_screen.dart';
 
 import '../../../constants/contant_colors.dart';
 
