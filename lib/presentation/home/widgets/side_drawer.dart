@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/presentation/auth/navigation_screen.dart';
 import 'package:seek_reunite/presentation/complaint/screens/my_complaints_screen.dart';
+import 'package:seek_reunite/presentation/police/map_screen.dart';
 
 import '../../../constants/contant_colors.dart';
 
@@ -67,6 +68,13 @@ class SideNavDrawer extends StatelessWidget {
             leading: const Icon(Icons.notifications_none_outlined),
             title: const Text('Notifications'),
             onTap: () {},
+          ),
+          ListTile(
+            leading: const Icon(Icons.add_alert),
+            title: const Text('Police Stations Near me'),
+            onTap: () {
+              Get.to(const MapScreen());
+            },
           ),
           const Divider(color: ConstantColors.lightGreyColor),
           ListTile(
