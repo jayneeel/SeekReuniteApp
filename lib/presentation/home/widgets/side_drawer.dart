@@ -73,7 +73,7 @@ class SideNavDrawer extends StatelessWidget {
             leading: const Icon(Icons.add_alert),
             title: const Text('Police Stations Near me'),
             onTap: () {
-              Get.to(const MapScreen());
+              Get.to(MapScreen());
             },
           ),
           const Divider(color: ConstantColors.lightGreyColor),
