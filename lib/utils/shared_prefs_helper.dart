@@ -2,15 +2,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Helper{
 
-  void updateSharedPrefs({String? email, String? uid, required bool loggedInStatus}) async {
+  void updateSharedPrefs(List<String> userDetailsList) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("currentUID", uid!);
-    prefs.setString("currentEmail", email!);
-    prefs.setBool("loggedIn", loggedInStatus);
+    prefs.setStringList("userDetails", userDetailsList);
   }
 
-  Future<bool?> extractSharedPrefs() async {
+  Future<List<String>> extractUserDetails() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getBool("loggedIn");
+    return prefs.getStringList("userDetails") ?? [];
   }
+
 }

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/presentation/auth/navigation_screen.dart';
+import 'package:seek_reunite/presentation/complaint/screens/my_complaints_screen.dart';
+import 'package:seek_reunite/presentation/police/map_screen.dart';
 
 import '../../../constants/contant_colors.dart';
-import '../../../utils/shared_prefs_helper.dart';
 
 class SideNavDrawer extends StatelessWidget {
   const SideNavDrawer({super.key});
@@ -59,19 +60,27 @@ class SideNavDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.person_search_rounded),
             title: const Text('My Complaints'),
-            onTap: () {},
+            onTap: () {
+              Get.to(() =>  const MyComplaintsScreen());
+            },
           ),
           ListTile(
             leading: const Icon(Icons.notifications_none_outlined),
             title: const Text('Notifications'),
             onTap: () {},
           ),
+          ListTile(
+            leading: const Icon(Icons.add_alert),
+            title: const Text('Police Stations Near me'),
+            onTap: () {
+              Get.to(const MapScreen());
+            },
+          ),
           const Divider(color: ConstantColors.lightGreyColor),
           ListTile(
-            onTap: (){
-              FirebaseAuth.instance.signOut();
+            onTap: () async {
+              await FirebaseAuth.instance.signOut();
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sign Out Successfully")));
-              Helper().updateSharedPrefs(email: null, uid: null, loggedInStatus: false);
               Get.to(() =>  const NavigationScreen());
             },
             leading: const Icon(Icons.logout, color: Colors.red),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,10 +17,30 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseFirestore db = FirebaseFirestore.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final CollectionReference users = db.collection('users');
     var emailController = TextEditingController();
     var passwordController = TextEditingController();
     var nameController = TextEditingController();
     var phnoController = TextEditingController();
+
+    void signUpUser(TextEditingController nameController, TextEditingController phnoController, TextEditingController emailController, TextEditingController passwordController, BuildContext buildContext) async {
+      String email = emailController.text;
+      String password = passwordController.text;
+      String name = nameController.text;
+      String phno = phnoController.text;
+      await auth.createUserWithEmailAndPassword(email: email, password: password);
+      final Map<String, String> userDetailsMap = {
+        "email": email,
+        "name": name,
+        "phone": phno,
+      };
+      await users.doc(auth.currentUser!.uid.toString()).set(userDetailsMap);
+      ScaffoldMessenger.of(buildContext).showSnackBar(const SnackBar(content: Text("Account Created Successfully!")));
+      Helper().updateSharedPrefs(userDetailsMap.values.toList());
+      Get.to(const HomeScreen());
+    }
 
     return Scaffold(
       body: SafeArea(
@@ -34,7 +55,7 @@ class SignUpScreen extends StatelessWidget {
               SizeConstant.getHeightSpace(30),
               MyTextField(controller: nameController, hintText: "full name", obscureText: false),
               SizeConstant.getHeightSpace(10),
-              MyTextField(controller: phnoController, hintText: "phone", obscureText: false, inputType: TextInputType.phone,),
+              MyTextField(controller: phnoController, hintText: "phone", obscureText: false, inputType: TextInputType.phone),
               SizeConstant.getHeightSpace(10),
               MyTextField(controller: emailController, hintText: "email", obscureText: false, inputType: TextInputType.emailAddress,),
               SizeConstant.getHeightSpace(10),
@@ -48,15 +69,5 @@ class SignUpScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  void signUpUser(TextEditingController nameController, TextEditingController phnoController, TextEditingController emailController, TextEditingController passwordController, BuildContext buildContext) async {
-
-    String email = emailController.text;
-    String password = passwordController.text;
-    await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-    ScaffoldMessenger.of(buildContext).showSnackBar(const SnackBar(content: Text("Account Created Successfully!")));
-    Helper().updateSharedPrefs(email: FirebaseAuth.instance.currentUser!.email, uid: FirebaseAuth.instance.currentUser!.uid, loggedInStatus: true);
-    Get.to(const HomeScreen());
   }
 }
