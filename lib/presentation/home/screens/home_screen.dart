@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: const BottomNavBar(),
       floatingActionButton: FloatingActionButton(
         isExtended: true, onPressed: () {
-          Get.to(const AddComplaintScreen());
+          Get.to(() => const AddComplaintScreen());
       },
         tooltip: "Complaint",
         child: const Icon(Icons.receipt_rounded),

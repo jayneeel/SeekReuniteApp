@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../utils/helpers.dart';
 import '../../profile/profile_screen.dart';
 
 class BottomNavBar extends StatelessWidget {
@@ -9,10 +10,10 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      onTap: (index){
+      onTap: (index) async {
         if(index == 0){
         }else if(index == 1){
-
+          await Helpers.capturePhoto();
         }else{
           Get.to(const ProfileScreen());
         }
