@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:live_indicator/live_indicator.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/constants/contant_colors.dart';
+import 'package:seek_reunite/presentation/complaint/screens/add_complaint_screen.dart';
 import 'package:seek_reunite/presentation/home/widgets/bottom_nav.dart';
 import 'package:seek_reunite/presentation/home/widgets/side_drawer.dart';
+
+import '../controllers/home_controllers.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -15,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final HomeController controller = Get.put(HomeController());
   var nameList = [ "Amogh", "Aditya", "Jayneel", "Amol", "Anurag", "Vikas", "Deepinder",];
   @override
   Widget build(BuildContext context) {
@@ -22,14 +27,25 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: const SideNavDrawer(),
       bottomNavigationBar: const BottomNavBar(),
       floatingActionButton: FloatingActionButton(
-        isExtended: true, onPressed: () {  },
-        child: const Icon(Icons.receipt_rounded),
+        isExtended: true, onPressed: () {
+          Get.to(const AddComplaintScreen());
+      },
         tooltip: "Complaint",
+        child: const Icon(Icons.receipt_rounded),
       ),
       appBar: AppBar(
         title: const Text("Welcome"),
-        leading: const Icon(
-          Icons.menu,
+        leading: Builder(
+          builder: (context) {
+            return GestureDetector(
+              onTap: (){
+                Scaffold.of(context).openDrawer();
+              },
+              child: const Icon(
+                Icons.menu,
+              ),
+            );
+          }
         ),
       ),
       body: Padding(
@@ -72,11 +88,11 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: ConstantColors.lightGreyColor),
       ),
-      child: Column(
+      child: Obx(()=> Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           InkWell(
+          InkWell(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -85,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     const Text(
                       "Today's Statistics",
                       style:
-                          TextStyle(fontSize: 18, color: ConstantColors.blackColor, fontFamily: ConstantFonts.poppinsBold),
+                      TextStyle(fontSize: 18, color: ConstantColors.blackColor, fontFamily: ConstantFonts.poppinsBold),
                     ),
                     SizeConstant.getWidthSpace(6),
                     Container(
@@ -106,9 +122,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                const Icon(
-                  Icons.keyboard_arrow_down_rounded,
-                  color: ConstantColors.lightGreyColor,
+                GestureDetector(
+                  onTap: (){
+                    controller.isExpanded.value = !controller.isExpanded.value;
+                  },
+                  child: Icon(
+                    (controller.isExpanded.value) ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down_rounded,
+                    color: ConstantColors.lightGreyColor,
+                    size: 25,
+                  ),
                 )
               ],
             ),
@@ -159,8 +181,24 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+          if (controller.isExpanded.value)...[
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+
+                      ],
+                    )
+                  ],
+                )
+              ],)
+          ]
         ],
-      ),
+      )),
     );
   }
 }
