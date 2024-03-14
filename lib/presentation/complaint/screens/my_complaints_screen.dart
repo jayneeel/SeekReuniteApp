@@ -11,13 +11,13 @@ class MyComplaintsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: FirebaseFirestore.instance.collection('complaints').snapshots(),
-            builder: (_, snapshot) {
-              if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+        body: SafeArea(
+            child: Padding(
+      padding: const EdgeInsets.all(16),
+      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: FirebaseFirestore.instance.collection('complaints').snapshots(),
+        builder: (_, snapshot) {
+          if (snapshot.hasError) return Text('Error = ${snapshot.error}');
 
               if (snapshot.hasData) {
                 final docs = snapshot.data!.docs;
@@ -26,17 +26,15 @@ class MyComplaintsScreen extends StatelessWidget {
                   itemBuilder: (_, i) {
                     final data = docs[i].data();
                     return ComplaintCard(label: data['name'], onTap: (){
-                      Get.to(const ViewComplaintScreen());
+                      Get.to(ViewComplaintScreen(data: data,));
                     },);
                   }, separatorBuilder: (context, index) => SizeConstant.getHeightSpace(16),
                 );
               }
 
-              return const Center(child: CircularProgressIndicator());
-            },
-          ),
-        )
-      )
-    );
+          return const Center(child: CircularProgressIndicator());
+        },
+      ),
+    )));
   }
 }

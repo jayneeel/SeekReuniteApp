@@ -228,11 +228,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Column(
                           mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(controller.lostPeopleCount.value.toString() ?? "67325423"),
+                            Image.asset("assets/images/statistics.jpg", width: 100, height: 100,),
+                            const Text("Lost People Count: 50"),
                           ],
                         )
                       ],
