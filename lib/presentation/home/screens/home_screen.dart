@@ -236,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset("assets/images/statistics.jpg", width: 100, height: 100,),
-                            const Text("Lost People Count: 50"),
+                            const Text("Lost People Count: 54"),
                           ],
                         )
                       ],
