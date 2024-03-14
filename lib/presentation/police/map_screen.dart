@@ -1,9 +1,6 @@
-import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
-import 'package:seek_reunite/constants/constants.dart';
+
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -13,120 +10,67 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  Location _locationController = new Location();
+  
+  static const _initialCameraPosition = CameraPosition(target: LatLng(19.1951, 72.9772), zoom: 17);
 
-  final Completer<GoogleMapController> _mapController = Completer<GoogleMapController>();
-
-  static const LatLng _pGooglePlex = LatLng(19.151395275963637, 73.00147811667976);
-  static const LatLng _pApplePark = LatLng(37.3346, -122.0090);
-  LatLng? _currentP = null;
-
-  Map<PolylineId, Polyline> polylines = {};
-
+  late GoogleMapController _googleMapController;
+  final Set<Marker> markers = {};
 
   @override
   void initState() {
+    // TODO: implement initState
+    addMarkers();
     super.initState();
-    getLocationUpdates().then(
-          (_) => {
-        getPolylinePoints().then((coordinates) => {
-          generatePolyLineFromPoints(coordinates),
-        }),
-      },
-    );
+  }
+
+  @override
+  void dispose() {
+    _googleMapController.dispose();
+    super.dispose();
+  }
+
+  void addMarkers() {
+    List<Map<String, dynamic>> locations = [
+      {"name": "Mulund", "lat": 19.17751, "lng": 72.95188},
+      {"name": "Navghar Mulund East", "lat": 19.16916, "lng": 72.96856},
+      {"name": "Thane Nagar", "lat": 19.19518, "lng": 72.97727},
+      {"name": "Naupada", "lat": 19.19567, "lng": 72.96835},
+      {"name": "Railway Thane", "lat": 19.18918, "lng": 72.97607},
+      {"name": "Rabale (MIDC)", "lat": 19.15139, "lng": 73.00148},
+      {"name": "Rabale Thane-Belapur", "lat": 19.13955, "lng": 73.00199},
+      {"name": "Powai", "lat": 19.11977, "lng": 72.89952},
+      {"name": "Ghatkopar", "lat": 19.08752, "lng": 72.90002},
+      {"name": "Kolsewadi Kalyan", "lat": 19.23054, "lng": 73.14661},
+      {"name": "Khadakpada", "lat": 19.25939, "lng": 73.14335},
+      {"name": "Dombivali", "lat": 19.21685, "lng": 73.08673},
+      {"name": "Ambarnath West", "lat": 19.21142, "lng": 73.18926},
+      {"name": "Bhandup", "lat": 19.15160, "lng": 72.93649},
+      {"name": "Borivali", "lat": 19.22973, "lng": 72.85598},
+    ];
+
+    for (var location in locations) {
+      markers.add(
+        Marker(
+          markerId: MarkerId(location["name"]),
+          position: LatLng(location["lat"], location["lng"]),
+          infoWindow: InfoWindow(
+            title: location["name"] + "Police Station",
+          ),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _currentP == null
-          ? const Center(
-        child: Text("Loading..."),
-      )
-          : GoogleMap(
-        onMapCreated: ((GoogleMapController controller) => _mapController.complete(controller)),
-        initialCameraPosition: const CameraPosition(
-          target: _pGooglePlex,
-          zoom: 13,
-        ),
-        markers: {
-          Marker(
-            markerId: const MarkerId("_currentLocation"),
-            icon: BitmapDescriptor.defaultMarker,
-            position: _currentP!,
-          ),
-          const Marker(
-              markerId: MarkerId("_sourceLocation"),
-              icon: BitmapDescriptor.defaultMarker,
-              position: _pGooglePlex),
-          const Marker(
-              markerId: MarkerId("_destionationLocation"),
-              icon: BitmapDescriptor.defaultMarker,
-              position: _pApplePark)
-        },
-        polylines: Set<Polyline>.of(polylines.values),
+      body: GoogleMap(
+        zoomControlsEnabled: false,
+        myLocationButtonEnabled: true, initialCameraPosition: _initialCameraPosition,
+        onMapCreated: (controller) => _googleMapController = controller,
+        markers: markers,
       ),
-    );
-  }
-
-  Future<void> getLocationUpdates() async {
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-
-    _serviceEnabled = await _locationController.serviceEnabled();
-    if (_serviceEnabled) {
-      _serviceEnabled = await _locationController.requestService();
-    } else {
-      return;
-    }
-
-    _permissionGranted = await _locationController.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await _locationController.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    _locationController.onLocationChanged.listen((LocationData currentLocation) {
-      if (currentLocation.latitude != null && currentLocation.longitude != null) {
-        setState(() {
-          _currentP = LatLng(currentLocation.latitude!, currentLocation.longitude!);
-          _cameraToPosition(_currentP!);
-        });
-      }
-    });
-  }
-
-  Future<List<LatLng>> getPolylinePoints() async {
-    List<LatLng> polylineCoordinates = [];
-    PolylinePoints polylinePoints = PolylinePoints();
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      Constant.GOOGLE_API_KEY,
-      PointLatLng(_pGooglePlex.latitude, _pGooglePlex.longitude),
-      PointLatLng(_pApplePark.latitude, _pApplePark.longitude),
-      travelMode: TravelMode.driving,
-    );
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    } else {
-      print(result.errorMessage);
-    }
-    return polylineCoordinates;
-  }
-
-  void generatePolyLineFromPoints(coordinates) {}
-
-  Future<void> _cameraToPosition(LatLng position) async {
-    final GoogleMapController controller = await _mapController.future;
-    CameraPosition _newCameraPosition = CameraPosition(
-      target: position,
-      zoom: 13,
-    );
-    await controller.animateCamera(
-      CameraUpdate.newCameraPosition(_newCameraPosition),
+      floatingActionButton: FloatingActionButton(onPressed: () => _googleMapController.animateCamera(CameraUpdate.newCameraPosition(_initialCameraPosition)), child: Icon(Icons.location_searching_rounded),),
     );
   }
 }

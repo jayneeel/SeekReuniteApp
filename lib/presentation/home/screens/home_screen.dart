@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:live_indicator/live_indicator.dart';
@@ -10,7 +12,6 @@ import 'package:seek_reunite/presentation/home/widgets/side_drawer.dart';
 
 import '../controllers/home_controllers.dart';
 
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -20,33 +21,50 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final HomeController controller = Get.put(HomeController());
-  var nameList = [ "Amogh", "Aditya", "Jayneel", "Amol", "Anurag", "Vikas", "Deepinder",];
+  var nameList = [
+    "Amogh",
+    "Aditya",
+    "Jayneel",
+    "Amol",
+    "Anurag",
+    "Vikas",
+    "Deepinder",
+  ];
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getStatsData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const SideNavDrawer(),
       bottomNavigationBar: const BottomNavBar(),
       floatingActionButton: FloatingActionButton(
-        isExtended: true, onPressed: () {
+        isExtended: true,
+        onPressed: () {
           Get.to(() => const AddComplaintScreen());
-      },
+        },
         tooltip: "Complaint",
         child: const Icon(Icons.receipt_rounded),
       ),
       appBar: AppBar(
         title: const Text("Welcome"),
-        leading: Builder(
-          builder: (context) {
-            return GestureDetector(
-              onTap: (){
-                Scaffold.of(context).openDrawer();
-              },
-              child: const Icon(
-                Icons.menu,
-              ),
-            );
-          }
-        ),
+        leading: Builder(builder: (context) {
+          return GestureDetector(
+            onTap: () {
+              Scaffold.of(context).openDrawer();
+            },
+            child: const Icon(
+              Icons.menu,
+            ),
+          );
+        }),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -64,15 +82,30 @@ class _HomeScreenState extends State<HomeScreen> {
               ListView.separated(
                   scrollDirection: Axis.vertical,
                   physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,itemBuilder: (context, index){
-
-                return ListTile(
-                  leading: Image.asset("assets/images/kid.png",width: 30,
-                    height: 30,),
-                  title: Text(nameList[index], style: const TextStyle(fontFamily: ConstantFonts.poppinsBold, fontSize: 16, color: ConstantColors.blackColor),),
-                  subtitle: const Text("Bhatinda", style: TextStyle(fontFamily: ConstantFonts.poppinsRegular, fontSize: 14, color: ConstantColors.lightGreyColor),),
-                );
-              }, separatorBuilder: (context, index) => const Divider(), itemCount: nameList.length)
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Image.asset(
+                        "assets/images/kid.png",
+                        width: 30,
+                        height: 30,
+                      ),
+                      title: Text(
+                        nameList[index],
+                        style: const TextStyle(
+                            fontFamily: ConstantFonts.poppinsBold, fontSize: 16, color: ConstantColors.blackColor),
+                      ),
+                      subtitle: const Text(
+                        "Bhatinda",
+                        style: TextStyle(
+                            fontFamily: ConstantFonts.poppinsRegular,
+                            fontSize: 14,
+                            color: ConstantColors.lightGreyColor),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemCount: nameList.length)
             ],
           ),
         ),
@@ -88,117 +121,131 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: ConstantColors.lightGreyColor),
       ),
-      child: Obx(()=> Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          InkWell(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+      child: Obx(() => Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InkWell(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "Today's Statistics",
-                      style:
-                      TextStyle(fontSize: 18, color: ConstantColors.blackColor, fontFamily: ConstantFonts.poppinsBold),
+                    Row(
+                      children: [
+                        const Text(
+                          "Today's Statistics",
+                          style: TextStyle(
+                              fontSize: 18, color: ConstantColors.blackColor, fontFamily: ConstantFonts.poppinsBold),
+                        ),
+                        SizeConstant.getWidthSpace(6),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: ConstantColors.whiteColor,
+                          ),
+                          child: Row(
+                            children: [
+                              LiveIndicator(
+                                  color: Colors.red.shade700,
+                                  radius: 2.5,
+                                  spreadRadius: 5,
+                                  spreadDuration: const Duration(seconds: 1),
+                                  waitDuration: const Duration(seconds: 1)),
+                              const Text(
+                                "LIVE",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontFamily: ConstantFonts.poppinsBold,
+                                    color: ConstantColors.lightGreyColor),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    SizeConstant.getWidthSpace(6),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: ConstantColors.whiteColor,
+                    GestureDetector(
+                      onTap: () {
+                        controller.isExpanded.value = !controller.isExpanded.value;
+                      },
+                      child: Icon(
+                        (controller.isExpanded.value)
+                            ? Icons.keyboard_arrow_up_outlined
+                            : Icons.keyboard_arrow_down_rounded,
+                        color: ConstantColors.lightGreyColor,
+                        size: 25,
                       ),
-                      child: Row(
-                        children: [
-                          LiveIndicator(color: Colors.red.shade700,
-                              radius: 2.5,
-                              spreadRadius: 5,
-                              spreadDuration: const Duration(seconds: 1),
-                              waitDuration: const Duration(seconds: 1)),
-                          const Text("LIVE", style: TextStyle(fontSize: 14, fontFamily: ConstantFonts.poppinsBold, color: ConstantColors.lightGreyColor),)
-                        ],
-                      ),
-                    ),
+                    )
                   ],
                 ),
-                GestureDetector(
-                  onTap: (){
-                    controller.isExpanded.value = !controller.isExpanded.value;
-                  },
-                  child: Icon(
-                    (controller.isExpanded.value) ? Icons.keyboard_arrow_up_outlined : Icons.keyboard_arrow_down_rounded,
-                    color: ConstantColors.lightGreyColor,
-                    size: 25,
-                  ),
-                )
-              ],
-            ),
-          ),
-          SizeConstant.getHeightSpace(10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
+              ),
+              SizeConstant.getHeightSpace(10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  InkWell(
-                    child: Container(
-                        padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
-                        decoration: BoxDecoration(
-                            color: const Color(0xFFFFF8F5),
-                            border: Border.all(color: const Color(0xFFD7E3FF)),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Image.asset(
-                          "assets/images/kid.png",
-                          width: 60,
-                          height: 60,
-                        )),
-                    onTap: () {},
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InkWell(
+                        child: Container(
+                            padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
+                            decoration: BoxDecoration(
+                                color: const Color(0xFFFFF8F5),
+                                border: Border.all(color: const Color(0xFFD7E3FF)),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Image.asset(
+                              "assets/images/kid.png",
+                              width: 60,
+                              height: 60,
+                            )),
+                        onTap: () {},
+                      ),
+                      const Text("Kids"),
+                    ],
                   ),
-                  const Text("Kids"),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InkWell(
+                        child: Container(
+                            padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
+                            decoration: BoxDecoration(
+                                color: const Color(0xFFFFF8F5),
+                                border: Border.all(color: const Color(0xFFD7E3FF)),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Image.asset(
+                              "assets/images/adult.png",
+                              width: 60,
+                              height: 60,
+                            )),
+                        onTap: () {},
+                      ),
+                      const Text("Adults"),
+                    ],
+                  ),
                 ],
               ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InkWell(
-                    child: Container(
-                        padding: const EdgeInsets.only(left: 30, right: 30, top: 10),
-                        decoration: BoxDecoration(
-                            color: const Color(0xFFFFF8F5),
-                            border: Border.all(color: const Color(0xFFD7E3FF)),
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Image.asset(
-                          "assets/images/adult.png",
-                          width: 60,
-                          height: 60,
-                        )),
-                    onTap: () {},
-                  ),
-                  const Text("Adults"),
-                ],
-              ),
-            ],
-          ),
-          if (controller.isExpanded.value)...[
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
+              if (controller.isExpanded.value) ...[
+                Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
+                    Row(
                       children: [
-
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(controller.lostPeopleCount.value.toString() ?? "67325423"),
+                          ],
+                        )
                       ],
                     )
                   ],
                 )
-              ],)
-          ]
-        ],
-      )),
+              ]
+            ],
+          )),
     );
+  }
+
+  Future<void> getStatsData() async {
+    controller.lostPeopleCount.value = await db.collection("complaints").snapshots().length;
   }
 }
