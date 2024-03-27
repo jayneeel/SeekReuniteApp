@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/constants/constant_size.dart';
@@ -28,7 +29,10 @@ class ViewComplaintScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Image.network(data['picture'], height: 150, width: 100,),
+                    GestureDetector(
+                        onTap: (){
+                        },
+                        child: CachedNetworkImage(imageUrl: data['picture'], width: 100,height: 200,placeholder: (context, url) => const CircularProgressIndicator(),)),
                     SizeConstant.getWidthSpace(10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,47 +63,41 @@ class ViewComplaintScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
-                Card(
-                  color: Colors.white60,
-                  child: Column(
-                    children: [
-                      const Text(
-                        "Description",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Description",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
                       ),
-                      Text(
-                        "${data['description']}",
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ],
-                  ),
+                    ),
+                    Text(
+                      "${data['description']}",
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
-                Card(
-                  child: Column(
-                    children: [
-                      const Center(
-                        child: Text(
-                          "Complete Address",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Complete Address",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
-                      const SizedBox(width: 10),
-                      Text(
-                        data['address'],
-                        style: const TextStyle(
-                          fontSize: 16,
-                        ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      data['address'],
+                      style: const TextStyle(
+                        fontSize: 16,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 )
               ],
             ),
