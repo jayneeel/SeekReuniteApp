@@ -36,7 +36,8 @@ class ComplaintController extends GetxController {
         "lodgeOn": now,
         "lodgedBy": auth.currentUser?.uid,
         "referenceId": now.microsecondsSinceEpoch.toString(),
-        "picture": url
+        "picture": url,
+        "active": true
       };
 
       await db.collection("complaints").doc(complaintDetailsMap['referenceId']).set(complaintDetailsMap);

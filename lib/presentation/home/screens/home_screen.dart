@@ -7,6 +7,7 @@ import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/constants/contant_colors.dart';
 import 'package:seek_reunite/presentation/complaint/screens/add_complaint_screen.dart';
+import 'package:seek_reunite/presentation/complaint/screens/match_found_screen.dart';
 import 'package:seek_reunite/presentation/home/widgets/bottom_nav.dart';
 import 'package:seek_reunite/presentation/home/widgets/side_drawer.dart';
 
@@ -216,7 +217,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 60,
                               height: 60,
                             )),
-                        onTap: () {},
+                        onTap: () {
+                          Get.to(const MatchFoundScreen());
+                        },
                       ),
                       const Text("Adults"),
                     ],
