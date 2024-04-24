@@ -1,135 +1,187 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
+import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/constants/contant_colors.dart';
+import 'package:seek_reunite/widgets/custom_button.dart';
 
 class ViewComplaintScreen extends StatelessWidget {
-  const ViewComplaintScreen({super.key});
+  const ViewComplaintScreen({super.key, required this.data});
+  final Map<String, dynamic> data;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Complaint'),
+        title: const Text('My Complaint'),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Container(
-              height: 200,
-              width: 400,
-              decoration: BoxDecoration(
-                color: ConstantColors.primaryColor,
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(15),bottomRight: Radius.circular(15)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.blueGrey.withOpacity(0.5),
-                    spreadRadius: 3,
-                    blurRadius: 10,
-                    offset: Offset(0, 3),
-                  ),
-                ]
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Row(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+                color: ConstantColors.whiteColor,
+                borderRadius: BorderRadius.circular(15),
+                border: Border.all(color: const Color(0xFFBCBCBC))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
                   children: [
-                    Container(
-                      height: 200,
-                      width: 150,
-                      child: Image.asset("assets/images/person.png",
-                      height: 150,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(30),
+                        child: CachedNetworkImage(
+                          imageUrl: data['picture'],
+                          width: 200,
+                          height: 250,
+                          placeholder: (context, url) => const CircularProgressIndicator(strokeAlign: BorderSide.strokeAlignInside,),
+                        )),
+                    SizeConstant.getHeightSpace(10),
+                    Text(
+                      data['name'],
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontFamily: ConstantFonts.poppinsMedium,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(25),
+                    SizeConstant.getHeightSpace(20),
+                    Container(
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                          color: const Color(0xFFF7FDE8),
+                          border: Border.all(color: const Color(0xFFDFFD94)),
+                          borderRadius: BorderRadius.circular(12)),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "Amol Pande",
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            children: [
+                              Image.asset("assets/images/demographics.png",width: 30, height: 30),
+                              const Text("  Demographics",style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF1D1E20))),
+                            ],
                           ),
-                          SizedBox(height: 10),
-                          Text(
-                            "Age : 45",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "Age",
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF121515)),
                           ),
                           Text(
-                            "Gender Male",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            "${data['age']}",
+                            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Color(0xFF070606)),
+                          ),
+                          const SizedBox(height: 10),
+                          const Text(
+                            "Gender",
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xFF121515)),
+                          ),
+                          const Text(
+                            "Male",
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400, color: Color(0xFF070606)),
                           ),
                         ],
                       ),
                     ),
-
                   ],
                 ),
-              ),
-            ),
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                color: Colors.white60,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Description",
-                        style: TextStyle(
-                          fontSize: 23,
-                          fontWeight: FontWeight.bold,
+                const SizedBox(height: 10),
+                Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                      color: const Color(0xFFEFF3FD),
+                      border: Border.all(color: const Color(0xFFD5E1FD)),
+                      borderRadius: BorderRadius.circular(12)),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset("assets/images/description.png", width: 30, height: 30),
+                          const Text(
+                            "  Description",
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xFF1D1E20)),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        "${data['description']}",
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF6F6F6F),
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                    ),
-                    Text("The Simple English Wikipedia is a modified English-language edition of Wikipedia written primarily in Basic English and Learning English. It is one of seven Wikipedias written in an Anglic language or English-based pidgin or creole. ",
-                    style: TextStyle(
-                      fontSize: 15
-                    ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Card(
-                color: Colors.lightBlueAccent,
-                child: Column(
-                  children: [
-                    Center(
-                      child: Text(
-                        "Complete Address",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                const SizedBox(height: 10),
+                Container(
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                      color: const Color(0xFFFDF3F3),
+                      border: Border.all(color: const Color(0xFFE2B3B3)),
+                      borderRadius: BorderRadius.circular(12)),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Image.asset("assets/images/address.png", width: 30, height: 30),
+                          const Text(
+                            "  Complete Address",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Color(0xFF1D1E20),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        data['address'],
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Color(0xFF6F6F6F),
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      "Sector 4, Airoli, Navi Mumbai",
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+                const Spacer(),
+                CustomButton(
+                  text: "Close Complaint",
+                  color: const Color(0xFF531342),
+                  onTap: () => closeComplaintBottomSheet(context),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
+}
+
+Future<void> closeComplaintBottomSheet(BuildContext context) async {
+  await showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      builder: (BuildContext context) => Container(
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [const Text("Found?"), Switch(value: true, onChanged: (v) {})],
+            ),
+          ));
 }

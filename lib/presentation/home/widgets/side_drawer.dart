@@ -5,6 +5,7 @@ import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/presentation/auth/navigation_screen.dart';
 import 'package:seek_reunite/presentation/complaint/screens/my_complaints_screen.dart';
 import 'package:seek_reunite/presentation/police/map_screen.dart';
+import 'package:seek_reunite/presentation/profile/profile_screen.dart';
 
 import '../../../constants/contant_colors.dart';
 
@@ -48,20 +49,17 @@ class SideNavDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: const Icon(Icons.home_outlined),
-            title: const Text('Home'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.person_outline_rounded),
-            title: const Text('Profile'),
-            onTap: () {},
-          ),
-          ListTile(
             leading: const Icon(Icons.person_search_rounded),
             title: const Text('My Complaints'),
             onTap: () {
               Get.to(() =>  const MyComplaintsScreen());
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.person_outline_rounded),
+            title: const Text('Profile'),
+            onTap: () {
+              Get.to(() =>  const ProfileScreen());
             },
           ),
           ListTile(
@@ -73,7 +71,7 @@ class SideNavDrawer extends StatelessWidget {
             leading: const Icon(Icons.add_alert),
             title: const Text('Police Stations Near me'),
             onTap: () {
-              Get.to(MapScreen());
+              Get.to(const MapScreen());
             },
           ),
           const Divider(color: ConstantColors.lightGreyColor),
