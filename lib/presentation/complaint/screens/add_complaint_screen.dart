@@ -28,6 +28,7 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
   final TextEditingController lostSinceController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final List<File> pictures = List<File>.empty(growable: true);
+  final List<File> firs = List<File>.empty(growable: true);
   ComplaintController controller = Get.put(ComplaintController());
 
   @override
@@ -215,9 +216,40 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
                       },
                     ),
                   ),
+                SizeConstant.getHeightSpace(12),
+                if (firs.isEmpty)
+                  addFir()
+                else
+                  SizedBox(
+                    height: 84,
+                    child: ListView.builder(
+                      itemCount: firs.length + 1,
+                      shrinkWrap: true,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) {
+                        if (index < firs.length) {
+                          final p = firs[index];
+                          return PictureItem(
+                              file: p,
+                              onCancelled: () {
+                                setState(() {
+                                  firs.removeAt(index);
+                                });
+                              });
+                        } else {
+                          if (firs.length < 4) {
+                            return addPicture();
+                          } else {
+                            SizeConstant.getHeightSpace(0);
+                          }
+                        }
+                        return SizeConstant.getHeightSpace(0);
+                      },
+                    ),
+                  ),
                 SizeConstant.getHeightSpace(40),
                 CustomButton(text: "Lodge Complaint", onTap: (){
-                  controller.lodgeComplaint(nameController.text, addressController.text, descriptionController.text, DateTime(DateTime.march), int.parse(ageController.text), pictures[0]);
+                  controller.lodgeComplaint(nameController.text, addressController.text, descriptionController.text, DateTime(DateTime.march), int.parse(ageController.text), pictures[0], firs[0]);
                 },),
               ],
             ),
@@ -251,7 +283,36 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.camera_alt),
-          Text("  Upload Photos"),
+          Text("  Upload Photos of missing person"),
+        ],
+      )
+    ),
+  );
+  Widget addFir() => InkWell(
+    onTap: () async {
+      final res = await openBottomSheet("image", context);
+
+      if ((res ?? []).isEmpty) return;
+
+      for (final element in res) {
+        setState(() {
+          firs.add(File(element.path));
+        });
+      }
+    },
+    child: Container(
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: ConstantColors.whiteColor,
+        border: Border.all(color: ConstantColors.primaryColor),
+      ),
+      alignment: Alignment.center,
+      child: const Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.document_scanner),
+          Text("  Upload Registered FIR"),
         ],
       )
     ),
