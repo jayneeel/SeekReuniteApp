@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
+import 'package:seek_reunite/presentation/home/screens/home_screen.dart';
 
 class ComplaintController extends GetxController {
   FirebaseFirestore db = FirebaseFirestore.instance;
   FirebaseAuth auth = FirebaseAuth.instance;
-  Reference reference = FirebaseStorage.instance.ref().child('complaints');
+  Reference complaintReference = FirebaseStorage.instance.ref().child('complaints');
+  Reference firReference = FirebaseStorage.instance.ref().child('firs');
 
   String username = 'seekreunite@gmail.com';
   String password = 'bqcl qyjr ppgg gzub';
@@ -19,42 +21,77 @@ class ComplaintController extends GetxController {
     contentType: 'image/jpeg',
   );
   var screen_logo = 'assets/images/sr_splash_logo.png';
+  final selectedValue = 'Person Returned'.obs;
+  final dropdownItems = [
+    'Person Returned',
+    'Person Found',
+    'Police got the Lead',
+  ];
 
-  Future<void> lodgeComplaint(
-      String name, String address, String description, DateTime lostSince, int age, File picture) async {
+  Future<void> closeComplaint(String refId) async {
+    await db.collection("complaints").doc(refId).update({"active": false});
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Complaint lodged!'),
+        content: Text('Your complaint with $refId is closed successfully!'),
+        actions: [
+          TextButton(
+            child: const Text("Ok"),
+            onPressed: () => Get.to(const HomeScreen()),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> lodgeComplaint(String name, String address, String description, DateTime lostSince, int age,
+      File picture, File fir) async {
     DateTime now = DateTime.now();
-    String url = "";
-    UploadTask uploadTask = reference.child(name + now.microsecondsSinceEpoch.toString()).putFile(picture, metadata);
-    uploadTask.then((res) async {
-      url = await res.ref.getDownloadURL();
-      final Map<String, dynamic> complaintDetailsMap = {
-        "name": name,
-        "age": age,
-        "lostSince": lostSince,
-        "address": address,
-        "description": description,
-        "lodgeOn": now,
-        "lodgedBy": auth.currentUser?.uid,
-        "referenceId": now.microsecondsSinceEpoch.toString(),
-        "picture": url,
-        "active": true
-      };
 
-      await db.collection("complaints").doc(complaintDetailsMap['referenceId']).set(complaintDetailsMap);
-      Get.dialog(
-        AlertDialog(
-          title: const Text('Complaint lodged!'),
-          content: Text('Your reference ID is ${complaintDetailsMap['referenceId']}'),
-          actions: [
-            TextButton(
-              child: const Text("Ok"),
-              onPressed: () => Get.back(),
-            ),
-          ],
-        ),
-      );
-      sendComplaintConfirmationMail(complaintDetailsMap);
-    });
+    print("UPLOADINGGGGGGGGG...............");
+    TaskSnapshot photoTask = await complaintReference
+        .child(name + now.microsecondsSinceEpoch.toString())
+        .putFile(picture, metadata);
+    TaskSnapshot firTask = await firReference
+        .child(name + now.microsecondsSinceEpoch.toString())
+        .putFile(fir, metadata);
+
+    String photoUrl = await photoTask.ref.getDownloadURL();
+    String firUrl = await firTask.ref.getDownloadURL();
+
+    print("UPLOADED...............");
+
+    final Map<String, dynamic> complaintDetailsMap = {
+      "name": name,
+      "age": age,
+      "lostSince": lostSince,
+      "address": address,
+      "description": description,
+      "lodgeOn": now,
+      "lodgedBy": auth.currentUser?.uid,
+      "referenceId": now.microsecondsSinceEpoch.toString(),
+      "picture": photoUrl,
+      "active": true,
+      "fir_complaint": firUrl,
+    };
+
+    print("SETTINGG............");
+    await db.collection("complaints").doc(complaintDetailsMap['referenceId']).set(complaintDetailsMap);
+    sendComplaintConfirmationMail(complaintDetailsMap);
+    print("COMPLETED.................");
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Complaint lodged!'),
+        content: Text('Your reference ID is ${complaintDetailsMap['referenceId']}'),
+        actions: [
+          TextButton(
+            child: const Text("Ok"),
+            onPressed: () => Get.to(const HomeScreen()),
+          ),
+        ],
+      ),
+    );
+    // });
   }
 
   Future<void> sendComplaintConfirmationMail(Map<String, dynamic> details) async {
@@ -77,4 +114,5 @@ class ComplaintController extends GetxController {
       }
     }
   }
+
 }
