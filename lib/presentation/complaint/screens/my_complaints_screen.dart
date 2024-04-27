@@ -14,39 +14,43 @@ class MyComplaintsScreen extends StatelessWidget {
     FirebaseAuth auth = FirebaseAuth.instance;
 
     return Scaffold(
+        appBar: AppBar(
+          title: const Text("My Complaints"),
+          automaticallyImplyLeading: true,
+        ),
         body: SafeArea(
             child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: FirebaseFirestore.instance
-            .collection('complaints')
-            .where('lodgedBy', isEqualTo: auth.currentUser!.uid)
-            .snapshots(),
-        builder: (_, snapshot) {
-          if (snapshot.hasError) return Text('Error = ${snapshot.error}');
+          padding: const EdgeInsets.all(16),
+          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: FirebaseFirestore.instance
+                .collection('complaints')
+                .where('lodgedBy', isEqualTo: auth.currentUser!.uid)
+                .snapshots(),
+            builder: (_, snapshot) {
+              if (snapshot.hasError) return Text('Error = ${snapshot.error}');
 
-          if (snapshot.hasData) {
-            final docs = snapshot.data!.docs;
-            return ListView.separated(
-              itemCount: docs.length,
-              itemBuilder: (_, i) {
-                final data = docs[i].data();
-                return ComplaintCard(
-                  label: data['name'],
-                  onTap: () {
-                    Get.to(ViewComplaintScreen(
-                      data: data,
-                    ));
+              if (snapshot.hasData) {
+                final docs = snapshot.data!.docs;
+                return ListView.separated(
+                  itemCount: docs.length,
+                  itemBuilder: (_, i) {
+                    final data = docs[i].data();
+                    return ComplaintCard(
+                      label: data['name'],
+                      onTap: () {
+                        Get.to(ViewComplaintScreen(
+                          data: data,
+                        ));
+                      },
+                    );
                   },
+                  separatorBuilder: (context, index) => SizeConstant.getHeightSpace(16),
                 );
-              },
-              separatorBuilder: (context, index) => SizeConstant.getHeightSpace(16),
-            );
-          }
+              }
 
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
-    )));
+              return const Center(child: CircularProgressIndicator());
+            },
+          ),
+        )));
   }
 }
