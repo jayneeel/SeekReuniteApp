@@ -14,7 +14,7 @@ class BottomNavBar extends StatelessWidget {
       onTap: (index) async {
         if(index == 0){
         }else if(index == 1){
-          Get.to(const CameraScreen());
+          Get.to(CameraScreen());
         }else{
           Get.to(const ProfileScreen());
         }

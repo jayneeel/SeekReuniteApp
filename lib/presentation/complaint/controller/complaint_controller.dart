@@ -110,7 +110,6 @@ class ComplaintController extends GetxController {
     // });
   }
   Future <void> registerFace(File image, complaintDetailsMap) async {
-
     final InputImage inputImage = InputImage.fromFilePath(image.path);
     _faceFeatures = await extractFaceFeatures(inputImage, _faceDetector);
     final Uint8List imageBytes = image.readAsBytesSync();
