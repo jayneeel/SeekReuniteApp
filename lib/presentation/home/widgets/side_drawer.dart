@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
@@ -15,76 +16,81 @@ class SideNavDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        children: [
-          DrawerHeader(
-            padding: EdgeInsets.zero,
-            child: Container(
-              color: ConstantColors.primaryColor,
-              child:  Column(
+      child: Container(
+        padding: EdgeInsets.all(8),
+        child: ListView(
+          children: [
+            DrawerHeader(
+              padding: EdgeInsets.zero,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 50,
-                    height: 50,
+                    width: 80,
+                    height: 80,
                     decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                     ),
                     child: const CircleAvatar(
                     radius: 50,
-                      backgroundImage: AssetImage("assets/images/person.png"),
+                      backgroundImage: AssetImage("assets/images/jayneel_pic.png"),
                     ),
                   ),
-                  const SizedBox(height: 8),
                   const Text(
-                    'Ethan Johnson',
-                    style: TextStyle(color: Colors.white, fontSize: 14, fontFamily: ConstantFonts.poppinsBold),
+                    "Ethan Jones",
+                    style: TextStyle(color: Colors.black, fontSize: 14, fontFamily: ConstantFonts.poppinsBold),
                   ),
                   Text(
                     FirebaseAuth.instance.currentUser!.email ?? "",
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: const TextStyle(color: Colors.black, fontSize: 14),
                   ),
                 ],
               ),
             ),
-          ),
-          ListTile(
-            leading: const Icon(Icons.person_search_rounded),
-            title: const Text('My Complaints'),
-            onTap: () {
-              Get.to(() =>  const MyComplaintsScreen());
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.person_outline_rounded),
-            title: const Text('Profile'),
-            onTap: () {
-              Get.to(() =>  const ProfileScreen());
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.notifications_none_outlined),
-            title: const Text('Notifications'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.add_alert),
-            title: const Text('Police Stations Near me'),
-            onTap: () {
-              Get.to(const MapScreen());
-            },
-          ),
-          const Divider(color: ConstantColors.lightGreyColor),
-          ListTile(
-            onTap: () async {
-              await FirebaseAuth.instance.signOut();
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sign Out Successfully")));
-              Get.to(() =>  const NavigationScreen());
-            },
-            leading: const Icon(Icons.logout, color: Colors.red),
-            title: const Text('Logout', style: TextStyle(color: Colors.red)),
-          ),
+
+            ListTile(
+              leading: const Icon(Icons.person_search_rounded, color: Colors.black,),
+              title: const Text('My Complaints',
+              style: TextStyle(color: Colors.black),),
+              onTap: () {
+                Get.to(() =>  const MyComplaintsScreen());
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.person_outline_rounded, color: Colors.black),
+              title: const Text('Profile',
+               style: TextStyle(color: Colors.black),),
+              onTap: () {
+                Get.to(() =>  const ProfileScreen());
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.notifications_none_outlined, color: Colors.black),
+              title: const Text('Notifications',
+              style: TextStyle(color: Colors.black),),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.add_alert, color: Colors.black,),
+              title: const Text('Police Stations Near me',
+              style: TextStyle(color: Colors.black),),
+              onTap: () {
+                Get.to(const MapScreen());
+              },
+            ),
+            const Divider(color: Colors.black),
+            ListTile(
+              onTap: () async {
+                await FirebaseAuth.instance.signOut();
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sign Out Successfully")));
+                Get.to(() =>  const NavigationScreen());
+              },
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text('Logout', style: TextStyle(color: Colors.black)),
+            ),
         ],
+        ),
       ),
     );
   }
