@@ -25,6 +25,7 @@ class MyComplaintsScreen extends StatelessWidget {
             stream: FirebaseFirestore.instance
                 .collection('complaints')
                 .where('lodgedBy', isEqualTo: auth.currentUser!.uid)
+                .where('active', isEqualTo: true)
                 .snapshots(),
             builder: (_, snapshot) {
               if (snapshot.hasError) return Text('Error = ${snapshot.error}');

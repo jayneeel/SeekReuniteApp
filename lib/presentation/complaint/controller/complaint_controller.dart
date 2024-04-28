@@ -58,11 +58,11 @@ class ComplaintController extends GetxController {
     );
   }
 
-  Future<void> lodgeComplaint(String name, String address, String description, DateTime lostSince, int age,
+  Future<void> lodgeComplaint(String name, String address, String description, DateTime lostSince, int age, int reward,
       File picture, File fir) async {
     DateTime now = DateTime.now();
 
-    print("UPLOADINGGGGGGGGG...............");
+    log("UPLOADINGGGGGGGGG...............");
     TaskSnapshot photoTask = await complaintReference
         .child(name + now.microsecondsSinceEpoch.toString())
         .putFile(picture, metadata);
@@ -73,7 +73,7 @@ class ComplaintController extends GetxController {
     String photoUrl = await photoTask.ref.getDownloadURL();
     String firUrl = await firTask.ref.getDownloadURL();
 
-    print("UPLOADED...............");
+    log("UPLOADED...............");
 
     final Map<String, dynamic> complaintDetailsMap = {
       "name": name,
@@ -87,13 +87,14 @@ class ComplaintController extends GetxController {
       "picture": photoUrl,
       "active": true,
       "fir_complaint": firUrl,
+      "reward": reward
     };
 
 
-    print("SETTINGG............");
+    log("SETTINGG............");
     await db.collection("complaints").doc(complaintDetailsMap['referenceId']).set(complaintDetailsMap);
     sendComplaintConfirmationMail(complaintDetailsMap);
-    print("COMPLETED.................");
+    log("COMPLETED.................");
     registerFace(picture, complaintDetailsMap);
     Get.dialog(
       AlertDialog(
@@ -147,11 +148,11 @@ class ComplaintController extends GetxController {
 
     try {
       final sendReport = await send(message, smtpServer);
-      print('Message sent: $sendReport');
+      log('Message sent: $sendReport');
     } on MailerException catch (e) {
-      print(e.message);
+      log(e.message);
       for (var p in e.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
+        log('Problem: ${p.code}: ${p.msg}');
       }
     }
   }
