@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:seek_reunite/presentation/identify_person/screens/camera_screen.dart';
 
 import '../../../utils/helpers.dart';
 import '../../profile/profile_screen.dart';
@@ -13,7 +14,7 @@ class BottomNavBar extends StatelessWidget {
       onTap: (index) async {
         if(index == 0){
         }else if(index == 1){
-          await Helpers.capturePhoto();
+          Get.to(const CameraScreen());
         }else{
           Get.to(const ProfileScreen());
         }

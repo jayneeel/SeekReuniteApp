@@ -5,4 +5,6 @@ class ConstantColors {
   static const whiteColor = Color(0xffFFFFFF);
   static const blackColor = Color(0xff000000);
   static const lightGreyColor = Color(0xff707070);
+  Color scaffoldTopGradientClr = Color(0xff8D8AD3);
+  Color scaffoldBottomGradientClr = Color(0xff454362);
 }
