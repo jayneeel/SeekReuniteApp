@@ -340,24 +340,33 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(10),
                             color: ConstantColors.whiteColor,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                LiveIndicator(
-                                    color: Colors.red.shade700,
-                                    radius: 2.5,
-                                    spreadRadius: 5,
-                                    spreadDuration: const Duration(seconds: 1),
-                                    waitDuration: const Duration(seconds: 1)),
-                                const Text(
-                                  "LIVE",
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontFamily: ConstantFonts.poppinsBold,
-                                      color: ConstantColors.lightGreyColor),
-                                )
-                              ],
+                          child: Container(
+
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.black),
+                              color: Colors.purple[300],
+
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  LiveIndicator(
+                                      color: Colors.red.shade700,
+                                      radius: 2.5,
+                                      spreadRadius: 5,
+                                      spreadDuration: const Duration(seconds: 1),
+                                      waitDuration: const Duration(seconds: 1)),
+                                  const Text(
+                                    "LIVE",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontFamily: ConstantFonts.poppinsBold,
+                                        color: ConstantColors.lightGreyColor),
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),

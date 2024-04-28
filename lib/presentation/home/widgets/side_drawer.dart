@@ -54,7 +54,7 @@ class SideNavDrawer extends StatelessWidget {
               title: const Text('My Complaints',
               style: TextStyle(color: Colors.black),),
               onTap: () {
-                Get.to(() =>  const MyComplaintsScreen());
+                Get.to(() =>  MyComplaintsScreen());
               },
             ),
             ListTile(
