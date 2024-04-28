@@ -1,13 +1,21 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:seek_reunite/presentation/home/screens/home_screen.dart';
+import 'package:seek_reunite/utils/extract_face_feature.dart';
+import 'package:uuid/uuid.dart';
+
+import '../../../models/user_model.dart';
 
 class ComplaintController extends GetxController {
   FirebaseFirestore db = FirebaseFirestore.instance;
@@ -20,13 +28,19 @@ class ComplaintController extends GetxController {
   final metadata = SettableMetadata(
     contentType: 'image/jpeg',
   );
-  var screen_logo = 'assets/images/sr_splash_logo.png';
   final selectedValue = 'Person Returned'.obs;
   final dropdownItems = [
     'Person Returned',
     'Person Found',
     'Police got the Lead',
   ];
+  final FaceDetector _faceDetector = FaceDetector(
+    options: FaceDetectorOptions(
+      enableLandmarks: true,
+      performanceMode: FaceDetectorMode.accurate,
+    ),
+  );
+  FaceFeatures? _faceFeatures;
 
   Future<void> closeComplaint(String refId) async {
     await db.collection("complaints").doc(refId).update({"active": false});
@@ -44,11 +58,11 @@ class ComplaintController extends GetxController {
     );
   }
 
-  Future<void> lodgeComplaint(String name, String address, String description, DateTime lostSince, int age,
+  Future<void> lodgeComplaint(String name, String address, String description, DateTime lostSince, int age, int reward,
       File picture, File fir) async {
     DateTime now = DateTime.now();
 
-    print("UPLOADINGGGGGGGGG...............");
+    log("UPLOADINGGGGGGGGG...............");
     TaskSnapshot photoTask = await complaintReference
         .child(name + now.microsecondsSinceEpoch.toString())
         .putFile(picture, metadata);
@@ -59,7 +73,7 @@ class ComplaintController extends GetxController {
     String photoUrl = await photoTask.ref.getDownloadURL();
     String firUrl = await firTask.ref.getDownloadURL();
 
-    print("UPLOADED...............");
+    log("UPLOADED...............");
 
     final Map<String, dynamic> complaintDetailsMap = {
       "name": name,
@@ -73,12 +87,15 @@ class ComplaintController extends GetxController {
       "picture": photoUrl,
       "active": true,
       "fir_complaint": firUrl,
+      "reward": reward
     };
 
-    print("SETTINGG............");
+
+    log("SETTINGG............");
     await db.collection("complaints").doc(complaintDetailsMap['referenceId']).set(complaintDetailsMap);
     sendComplaintConfirmationMail(complaintDetailsMap);
-    print("COMPLETED.................");
+    log("COMPLETED.................");
+    registerFace(picture, complaintDetailsMap);
     Get.dialog(
       AlertDialog(
         title: const Text('Complaint lodged!'),
@@ -93,6 +110,31 @@ class ComplaintController extends GetxController {
     );
     // });
   }
+  Future <void> registerFace(File image, complaintDetailsMap) async {
+    final InputImage inputImage = InputImage.fromFilePath(image.path);
+    _faceFeatures = await extractFaceFeatures(inputImage, _faceDetector);
+    final Uint8List imageBytes = image.readAsBytesSync();
+    final String base64Image = base64Encode(imageBytes);
+
+    String userId = const Uuid().v1();
+    UserModel user = UserModel(
+      id: userId,
+      name: complaintDetailsMap['name'],
+      image: base64Image,
+      registeredOn: int.parse(complaintDetailsMap['referenceId']),
+      faceFeatures: _faceFeatures,
+    );
+
+    FirebaseFirestore.instance
+        .collection("faces")
+        .doc(userId)
+        .set(user.toJson())
+        .catchError((e) {
+      log("Registration Error: $e");
+    }).whenComplete(() {
+      log("COMPLETEDDDDDDDDD!!!!!!!!");
+    });
+  }
 
   Future<void> sendComplaintConfirmationMail(Map<String, dynamic> details) async {
     final smtpServer = gmail(ComplaintController().username, ComplaintController().password);
@@ -106,11 +148,11 @@ class ComplaintController extends GetxController {
 
     try {
       final sendReport = await send(message, smtpServer);
-      print('Message sent: $sendReport');
+      log('Message sent: $sendReport');
     } on MailerException catch (e) {
-      print(e.message);
+      log(e.message);
       for (var p in e.problems) {
-        print('Problem: ${p.code}: ${p.msg}');
+        log('Problem: ${p.code}: ${p.msg}');
       }
     }
   }

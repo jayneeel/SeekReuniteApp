@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'dart:ui' as ui;
 import 'package:get/get.dart';
 import 'package:live_indicator/live_indicator.dart';
@@ -22,7 +20,7 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-final double _borderRadius = 24;
+const double _borderRadius = 24;
 
 class CustomCardShapePainter extends CustomPainter {
   final double radius;
@@ -36,7 +34,7 @@ class CustomCardShapePainter extends CustomPainter {
 
     var paint = Paint();
     paint.shader = ui.Gradient.linear(
-        Offset(0, 0), Offset(size.width, size.height), [
+        const Offset(0, 0), Offset(size.width, size.height), [
       HSLColor.fromColor(ConstantColors.pastelBlue).withLightness(0.8).toColor(),
       ConstantColors.pastelBlueLight
     ]);
@@ -130,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       appBar: AppBar(
         backgroundColor: Colors.purple[300],
-        title: const Text("Welcome"),
+        title: const Text("Welcome", style: TextStyle(color: Colors.white),),
         leading: Builder(builder: (context) {
           return GestureDetector(
             onTap: () {
@@ -138,173 +136,69 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Icon(
               Icons.menu,
+              color: Colors.white,
             ),
           );
         }),
       ),
       body: Stack(children: [
-        ClipPath(
-          clipper:CustomClipPath(),
-          child: Container(
-            height:450,
-            color: Colors.purple[100],
-          ),
-        ),
-              ClipPath(
-                clipper: CustomClipPath(),
-                child: Container(
-                  height: 350,
-                  color: Colors.purple[200],
-                ),
-              ),
+        // ClipPath(
+        //   clipper:CustomClipPath(),
+        //   child: Container(
+        //     height:280,
+        //     color: Colors.purple[100],
+        //   ),
+        // ),
+        //       ClipPath(
+        //         clipper: CustomClipPath(),
+        //         child: Container(
+        //           height: 350,
+        //           color: Colors.purple[200],
+        //         ),
+        //       ),
 
         ClipPath(
           clipper: CustomClipPath(),
           child: Container(
-            height: 250,
+            height: 220,
             color: Colors.purple[300],
           ),
         ),
-
-
-
               Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    buildStatistics(),
-                    SizeConstant.getHeightSpace(20),
-                    const Text(
-                      "Recent Complaints",
-                      style: TextStyle(fontSize: 20, fontFamily: ConstantFonts.poppinsBold),
-                    ),
-                    SizeConstant.getHeightSpace(20),
-                    ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Center(
-                             child: Padding(
-                               padding: const EdgeInsets.all(16.0),
-                                child: Stack(
-                                  children: <Widget>[
-                                    Container(
-                                      height: 120,
-                                      decoration: BoxDecoration(
-                                       borderRadius: BorderRadius.circular(_borderRadius),
-                                       gradient: LinearGradient(colors: [
-                                         ConstantColors.pastelBlue,
-                                         ConstantColors.pastelBlueLight
-                                          ],
-                                         begin: Alignment.topLeft,
-                                         end: Alignment.bottomRight),
-                                         boxShadow: [
-                                          BoxShadow(
-                                           color: ConstantColors.pastelBlueLight,
-                                            blurRadius: 12,
-                                            offset: Offset(0, 6),
-                                             ),
-                                           ],
-                                          ),
-                                         ),
-                                       Positioned(
-                                         right: 0,
-                                         bottom: 0,
-                                         top: 0,
-                                         child: CustomPaint(
-                                          size: Size(100, 150),
-                                          painter: CustomCardShapePainter(_borderRadius),
-                                           ),
-                                          ),
-                                      Positioned.fill(
-                                        child: Row(
-                                          children: <Widget>[
-                                              Expanded(
-                                               child: Image.asset(
-                                                  "assets/images/adult.png"
-                                                    ),
-                                                   flex: 2,
-                                                  ),
-                                                 Expanded(
-                                                  flex: 4,
-                                                   child: Column(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                       children: <Widget>[
-                                                          Text(
-                                                            nameList[index],
-                                                            style: TextStyle(
-                                                            color: Colors.black,
-                                                             fontSize: 22,
-                                                             fontFamily: 'Avenir',
-                                                             fontWeight: FontWeight.w700),
-                                                             ),
-                                                             Text(
-                                                               nameList[index],
-                                                                style: TextStyle(
-                                                                 color: Colors.black,
-                                                                  fontFamily: 'Avenir',
-                                                                   ),
-                                                                  ),
-                                                             SizedBox(height: 16),
-                                                                Row(
-                                                                 children: <Widget>[
-                                                                   Icon(
-                                                                     Icons.location_on,
-                                                                      color: Colors.black,
-                                                                        size: 16,
-                                                                       ),
-                                                                     SizedBox(
-                                                                       width: 8,
-                                                                       ),
-                                                                 Flexible(
-                                                                   child: Text(
-                                                                     nameList[index],
-                                                                     style: TextStyle(
-                                                                     color: Colors.black,
-                                                                     fontSize: 15,
-                                                                     fontFamily: 'Avenir',
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                 ],
-                                                                ),
-                                                               ],
-                                                              ),
-                                                            ),
-                                                        Expanded(
-                                                          flex: 2,
-                                                          child: Column(
-                                                             mainAxisSize: MainAxisSize.min,
-                                                             children: <Widget>[
-                                                                 Text(
-                                                                  nameList[index],
-                                                                   style: TextStyle(
-                                                                    color: Colors.black,
-                                                                     fontFamily: 'Avenir',
-                                                                       fontSize: 18,
-                                                                       fontWeight: FontWeight.w700),
-                                                                         ),
-                                                                       ],
-                                                                      ),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ],
-                                                           ),
-                                                          ),
-                                                       );
-                                                      },
-                    separatorBuilder: (context, index) => const Divider(),
-                        itemCount: nameList.length)
-                  ],
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildStatistics(),
+                      SizeConstant.getHeightSpace(35),
+                      const Text(
+                        "Recent Complaints",
+                        style: TextStyle(fontSize: 20, fontFamily: ConstantFonts.poppinsBold),
+                      ),
+                      SizeConstant.getHeightSpace(20),
+                  SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.6,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 65),
+                        child: ListView.separated(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return RecentComplaintCard(nameList: nameList);
+                                                            },
+                          separatorBuilder: (context, index) =>  SizeConstant.getHeightSpace(5),
+                              itemCount: nameList.length),
+                      ),
+                      )
+                  )
+                    ],
+                  ),
                 ),
               ),
-             ),
     ]
     ),
             );
@@ -316,6 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
       width: double.infinity,
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
        border: Border.all(color: ConstantColors.lightGreyColor),
       ),
@@ -459,5 +354,121 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> getStatsData() async {
     controller.lostPeopleCount.value = await db.collection("complaints").snapshots().length;
+  }
+}
+
+class RecentComplaintCard extends StatelessWidget {
+  const RecentComplaintCard({
+    super.key,
+    required this.nameList,
+  });
+
+  final List<String> nameList;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+       child: Stack(
+         children: <Widget>[
+           Container(
+             height: 120,
+             decoration: BoxDecoration(
+               border: Border.all(color: const Color(0xFFD4E0FD)),
+              borderRadius: BorderRadius.circular(_borderRadius),
+              // gradient: const LinearGradient(colors: [
+              //   Color(0xFFC7C7C7),
+              //   Color(0xFF2F2D2D),
+              //   // ConstantColors.pastelBlueLight
+              //    ],
+              //   begin: Alignment.topLeft,
+              //   end: Alignment.bottomRight),
+               color: const Color(0xFFF7EDFD)
+                 ),
+                ),
+              Positioned(
+                right: 0,
+                bottom: 0,
+                top: 0,
+                child: CustomPaint(
+                 size: const Size(100, 150),
+                 painter: CustomCardShapePainter(_borderRadius),
+                  ),
+                 ),
+             Positioned.fill(
+               child: Row(
+                 children: <Widget>[
+                     Expanded(
+                      flex: 2,
+                      child: Image.asset(
+                         "assets/images/adult.png"
+                           ),
+                         ),
+                        const Expanded(
+                         flex: 4,
+                          child: Column(
+                             mainAxisSize: MainAxisSize.min,
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                 Text(
+                                   "Jayneel",
+                                   style: TextStyle(
+                                   color: Colors.black,
+                                    fontSize: 14,
+                                    fontFamily: ConstantFonts.poppinsMedium,
+                                    fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      "Jayneel",
+                                       style: TextStyle(
+                                        color: Colors.black,
+                                          ),
+                                         ),
+                                    SizedBox(height: 16),
+                                       Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.location_on,
+                                             color: Colors.black,
+                                               size: 16,
+                                              ),
+                                            SizedBox(
+                                              width: 8,
+                                              ),
+                                        Flexible(
+                                          child: Text(
+                                            "Jayneel",
+                                            style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 12,
+                                               ),
+                                             ),
+                                           ),
+                                        ],
+                                       ),
+                                      ],
+                                     ),
+                                   ),
+                               const Expanded(
+                                 flex: 2,
+                                 child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                        Text(
+                                          "Jayneel",
+                                          style: TextStyle(
+                                           color: Colors.black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700),
+                                                ),
+                                              ],
+                                             ),
+                                           ),
+                                         ],
+                                       ),
+                                     ),
+                                   ],
+                                  ),
+                                 );
   }
 }
