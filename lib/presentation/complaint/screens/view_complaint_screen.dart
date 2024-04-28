@@ -43,13 +43,28 @@ class ViewComplaintScreen extends StatelessWidget {
                             ),
                           )),
                       SizeConstant.getHeightSpace(10),
-                      Text(
-                        data['name'],
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontFamily: ConstantFonts.poppinsMedium,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            data['name'],
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontFamily: ConstantFonts.poppinsMedium,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizeConstant.getWidthSpace(10),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFE6FDF2),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: const Color(0xFFBDFCC7))
+                            ),
+                            child: Text("Reward ₹ ${data['reward']}", style: const TextStyle(color: Color(0xFF07B963), fontSize: 12),),
+                          )
+                        ],
                       ),
                       SizeConstant.getHeightSpace(10),
                       Container(
@@ -184,6 +199,7 @@ class ViewComplaintScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizeConstant.getHeightSpace(10),
                   CustomButton(
                     text: "Close Complaint",
                     color: const Color(0xFF531342),
