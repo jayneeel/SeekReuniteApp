@@ -14,6 +14,10 @@ class ProfileScreen extends StatelessWidget {
     ProfileController controller = Get.put(ProfileController());
     controller.getUserData();
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("My Profile"),
+        automaticallyImplyLeading: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Obx(()=> Column(

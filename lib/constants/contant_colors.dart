@@ -7,5 +7,7 @@ class ConstantColors {
   static const lightGreyColor = Color(0xff252222);
   static const greyishBlack = Color(0xf0000000);
   static const pastelBlue = Color(0xffffffff);
-  static const pastelBlueLight = Color(0xff8c8989);
+  static const pastelBlueLight = Color(0xfff3fded);
+  Color scaffoldTopGradientClr = Color(0xff8D8AD3);
+  Color scaffoldBottomGradientClr = Color(0xff454362);
 }
