@@ -22,7 +22,7 @@ class SideNavDrawer extends StatelessWidget {
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Color(0xFF76367B)
+              color: const Color(0xFFD4E0FD)
             ),
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -43,12 +43,12 @@ class SideNavDrawer extends StatelessWidget {
                 SizeConstant.getHeightSpace(5),
                 const Text(
                   "Jayneel Kanungo",
-                  style: TextStyle(color: Colors.white, fontSize: 14, fontFamily: ConstantFonts.poppinsBold),
+                  style: TextStyle(color: Colors.black , fontSize: 14, fontFamily: ConstantFonts.poppinsBold),
                 ),
                 SizeConstant.getHeightSpace(5),
                 Text(
                   FirebaseAuth.instance.currentUser!.email ?? "",
-                  style: const TextStyle(color: Colors.white, fontSize: 14),
+                  style: const TextStyle(color: Colors.black, fontSize: 14),
                 ),
               ],
             ),
