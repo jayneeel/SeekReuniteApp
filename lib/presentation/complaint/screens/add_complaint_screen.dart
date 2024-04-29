@@ -24,6 +24,7 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
   final TextEditingController ageController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController rewardController = TextEditingController();
+  final TextEditingController contactController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController lostSinceController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -188,6 +189,28 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
                 SizeConstant.getHeightSpace(8),
                 TextField(
                   keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
+                  controller: contactController,
+                  maxLines: 1,
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                  decoration: InputDecoration(
+                    counterText: "",
+                    contentPadding: const EdgeInsets.all(12),
+                    filled: true,
+                    fillColor: ConstantColors.whiteColor,
+                    labelText: "Contact",
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    hintStyle: const TextStyle(
+                      fontSize: 12,
+                      fontFamily: ConstantFonts.poppinsRegular,
+                      color: Color(0xFFA1A1A1),
+                    ),
+                  ),
+                ),
+                SizeConstant.getHeightSpace(8),
+                TextField(
+                  keyboardType: const TextInputType.numberWithOptions(decimal: false, signed: false),
                   controller: rewardController,
                   maxLines: 1,
                   onChanged: (value) {
@@ -207,6 +230,7 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
                     ),
                   ),
                 ),
+
                 SizeConstant.getHeightSpace(12),
                 if (pictures.isEmpty)
                   addPicture()
@@ -271,7 +295,7 @@ class _AddComplaintScreenState extends State<AddComplaintScreen> {
                   ),
                 SizeConstant.getHeightSpace(40),
                 CustomButton(text: "Lodge Complaint", onTap: (){
-                  controller.lodgeComplaint(nameController.text, addressController.text, descriptionController.text, DateTime(DateTime.march), int.parse(ageController.text),int.parse(rewardController.text), pictures[0], firs[0]);
+                  controller.lodgeComplaint(nameController.text, addressController.text, cityController.text,descriptionController.text,DateTime(DateTime.march), int.parse(ageController.text),int.parse(rewardController.text),contactController.text, pictures[0], firs[0]);
                 },),
               ],
             ),
