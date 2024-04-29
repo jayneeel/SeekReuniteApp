@@ -58,7 +58,7 @@ class ComplaintController extends GetxController {
     );
   }
 
-  Future<void> lodgeComplaint(String name, String address, String description, DateTime lostSince, int age, int reward,
+  Future<void> lodgeComplaint(String name, String address, String city,String description, DateTime lostSince, int age, int reward, String contact,
       File picture, File fir) async {
     DateTime now = DateTime.now();
 
@@ -87,7 +87,8 @@ class ComplaintController extends GetxController {
       "picture": photoUrl,
       "active": true,
       "fir_complaint": firUrl,
-      "reward": reward
+      "reward": reward,
+      "contact": contact
     };
 
 

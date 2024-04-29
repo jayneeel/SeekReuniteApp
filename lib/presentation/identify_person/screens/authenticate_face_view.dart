@@ -291,9 +291,14 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
 
         if (mounted) {
           log(refId, name: "ID");
-          FirebaseFirestore.instance.collection("complaints").doc(refId).get().catchError((e){}).then((snap) {
-            log(snap.data().toString(), name:"DATA");
-            Get.to(MatchFoundScreen(data: snap.data(),));
+          await FirebaseFirestore.instance.collection("complaints").doc(refId).get().catchError((e){}).then((DocumentSnapshot snap) {
+              if (snap.exists) {
+                Map<String, dynamic>? data = snap.data() as Map<String, dynamic>?;
+                log(data.toString(), name:"DATA");
+                Get.to(MatchFoundScreen(data: data));
+              } else {
+                log("Document does not exist", name: "DATA");
+              }
           });
         }
         break;
@@ -316,59 +321,59 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
           isMatching = false;
           trialNumber++;
         });
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text("Enter Name"),
-                content: TextFormField(
-                  controller: _nameController,
-                  cursorColor: accentColor,
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 2,
-                        color: accentColor,
-                      ),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        width: 2,
-                        color: accentColor,
-                      ),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      if (_nameController.text.trim().isEmpty) {
-                        // CustomSnackBar.errorSnackBar("Enter a name to proceed");
-                      } else {
-                        Navigator.of(context).pop();
-                        setState(() => isMatching = true);
-                        _playScanningAudio;
-                        _fetchUserByName(_nameController.text.trim());
-                      }
-                    },
-                    child: const Text(
-                      "Done",
-                      style: TextStyle(
-                        color: accentColor,
-                      ),
-                    ),
-                  )
-                ],
-              );
-            });
+        // showDialog(
+        //     context: context,
+        //     builder: (context) {
+        //       return AlertDialog(
+        //         title: const Text("Enter Name"),
+        //         content: TextFormField(
+        //           controller: _nameController,
+        //           cursorColor: accentColor,
+        //           decoration: InputDecoration(
+        //             enabledBorder: OutlineInputBorder(
+        //               borderSide: const BorderSide(
+        //                 width: 2,
+        //                 color: accentColor,
+        //               ),
+        //               borderRadius: BorderRadius.circular(4),
+        //             ),
+        //             focusedBorder: OutlineInputBorder(
+        //               borderSide: const BorderSide(
+        //                 width: 2,
+        //                 color: accentColor,
+        //               ),
+        //               borderRadius: BorderRadius.circular(4),
+        //             ),
+        //           ),
+        //         ),
+        //         actions: [
+        //           TextButton(
+        //             onPressed: () {
+        //               if (_nameController.text.trim().isEmpty) {
+        //                 // CustomSnackBar.errorSnackBar("Enter a name to proceed");
+        //               } else {
+        //                 Navigator.of(context).pop();
+        //                 setState(() => isMatching = true);
+        //                 _playScanningAudio;
+        //                 _fetchUserByName(_nameController.text.trim());
+        //               }
+        //             },
+        //             child: const Text(
+        //               "Done",
+        //               style: TextStyle(
+        //                 color: accentColor,
+        //               ),
+        //             ),
+        //           )
+        //         ],
+        //       );
+        //     });
       } else {
         setState(() => trialNumber++);
-        _showFailureDialog(
-          title: "Redeem Failed",
-          description: "Face doesn't match. Please try again.",
-        );
+        // _showFailureDialog(
+        //   title: "Redeem Failed",
+        //   description: "Face doesn't match. Please try again.",
+        // );
       }
     }
   }

@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,7 +19,6 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     addMarkers();
     super.initState();
   }
@@ -85,7 +83,7 @@ class _MapScreenState extends State<MapScreen> {
         onMapCreated: (controller) => _googleMapController = controller,
         markers: markers,
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () => _googleMapController.animateCamera(CameraUpdate.newCameraPosition(_initialCameraPosition)), child: Icon(Icons.location_searching_rounded),),
+      floatingActionButton: FloatingActionButton(onPressed: () => _googleMapController.animateCamera(CameraUpdate.newCameraPosition(_initialCameraPosition)), child: const Icon(Icons.location_searching_rounded),),
     );
   }
 }
