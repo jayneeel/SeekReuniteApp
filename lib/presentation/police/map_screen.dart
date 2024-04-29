@@ -1,5 +1,7 @@
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class MapScreen extends StatefulWidget {
@@ -48,6 +50,16 @@ class _MapScreenState extends State<MapScreen> {
       {"name": "Borivali", "lat": 19.22973, "lng": 72.85598},
     ];
 
+    Future<void> openGoogleMaps(double latitude, double longitude) async {
+      String googleUrl = 'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
+      final Uri url = Uri.parse(googleUrl);
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        throw 'Could not open the map.';
+      }
+    }
+
     for (var location in locations) {
       markers.add(
         Marker(
@@ -56,6 +68,9 @@ class _MapScreenState extends State<MapScreen> {
           infoWindow: InfoWindow(
             title: location["name"] + "Police Station",
           ),
+          onTap: () {
+            openGoogleMaps(location["lat"], location["lng"]);
+          },
         ),
       );
     }

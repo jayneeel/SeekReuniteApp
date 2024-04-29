@@ -35,7 +35,7 @@ class CustomCardShapePainter extends CustomPainter {
     var paint = Paint();
     paint.shader = ui.Gradient.linear(
         const Offset(0, 0), Offset(size.width, size.height), [
-      HSLColor.fromColor(ConstantColors.pastelBlue).withLightness(0.8).toColor(),
+      HSLColor.fromColor(Color(0xFFF3EB97)).withLightness(0.8).toColor(),
       ConstantColors.pastelBlueLight
     ]);
 
@@ -127,8 +127,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: const Icon(Icons.receipt_rounded),
       ),
       appBar: AppBar(
-        backgroundColor: Colors.purple[300],
-        title: const Text("Welcome", style: TextStyle(color: Colors.white),),
+        backgroundColor: const Color(0xFFD4E0FD),
+        title: const Text("Welcome", style: TextStyle(color: Colors.black),),
         leading: Builder(builder: (context) {
           return GestureDetector(
             onTap: () {
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
             child: const Icon(
               Icons.menu,
-              color: Colors.white,
+              color: Colors.black,
             ),
           );
         }),
@@ -161,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
           clipper: CustomClipPath(),
           child: Container(
             height: 220,
-            color: Colors.purple[300],
+            color: const Color(0xFFD4E0FD),
           ),
         ),
               Padding(
@@ -240,7 +240,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(color: Colors.black),
-                              color: Colors.purple[300],
 
                             ),
                             child: Padding(
@@ -383,7 +382,7 @@ class RecentComplaintCard extends StatelessWidget {
               //    ],
               //   begin: Alignment.topLeft,
               //   end: Alignment.bottomRight),
-               color: const Color(0xFFF7EDFD)
+               color: const Color(0xFFF3EB97)
                  ),
                 ),
               Positioned(
@@ -414,9 +413,9 @@ class RecentComplaintCard extends StatelessWidget {
                                    "Jayneel",
                                    style: TextStyle(
                                    color: Colors.black,
-                                    fontSize: 14,
+                                    fontSize: 19,
                                     fontFamily: ConstantFonts.poppinsMedium,
-                                    fontWeight: FontWeight.w600),
+                                    fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       "Jayneel",
@@ -455,7 +454,7 @@ class RecentComplaintCard extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                         Text(
-                                          "Jayneel",
+                                          "10,000",
                                           style: TextStyle(
                                            color: Colors.black,
                                               fontSize: 18,
