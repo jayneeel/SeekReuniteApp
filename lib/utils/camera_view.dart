@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:seek_reunite/utils/size_extension.dart';
 import 'package:seek_reunite/constants/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
@@ -34,30 +33,20 @@ class _CameraViewState extends State<CameraView> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Icon(
-              Icons.camera_alt_outlined,
-              color: primaryWhite,
-              size: 0.038.sh,
-            ),
-          ],
-        ),
-        SizedBox(height: 0.025.sh),
+        const SizedBox(height: 10),
         _image != null
             ? CircleAvatar(
-                radius: 0.15.sh,
+                radius: 100,
                 backgroundColor: const Color(0xffD9D9D9),
                 backgroundImage: FileImage(_image!),
               )
-            : CircleAvatar(
-                radius: 0.15.sh,
-                backgroundColor: const Color(0xffD9D9D9),
+            : const CircleAvatar(
+                radius: 100,
+                backgroundColor: Color(0xffD9D9D9),
                 child: Icon(
                   Icons.camera_alt,
-                  size: 0.09.sh,
-                  color: const Color(0xff2E2E2E),
+                  size: 80,
+                  color: Color(0xff2E2E2E),
                 ),
               ),
         GestureDetector(

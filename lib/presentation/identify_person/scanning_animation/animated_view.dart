@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:seek_reunite/utils/size_extension.dart';
 import 'package:flutter/material.dart';
 
 import 'animated_circle.dart';
@@ -68,8 +67,8 @@ class _AnimatedViewState extends State<AnimatedView>
     super.build(context);
 
     return SizedBox(
-      height: 0.3.sh,
-      width: 0.66.sw,
+      height: 50,
+      width: 50,
       child: CustomPaint(
         painter: AnimatedCircle(
             value: animation.value,
