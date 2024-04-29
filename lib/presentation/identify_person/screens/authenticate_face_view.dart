@@ -4,6 +4,8 @@ import 'dart:math' as math;
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
+import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/presentation/complaint/screens/match_found_screen.dart';
 import 'package:seek_reunite/presentation/identify_person/scanning_animation/animated_view.dart';
 // import 'package:face_auth/authenticate_face/user_details_view.dart';
@@ -82,14 +84,7 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
             width: double.maxFinite,
             height: double.maxFinite,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  scaffoldTopGradientClr,
-                  scaffoldBottomGradientClr,
-                ],
-              ),
+              color: Color(0xFFF3F6FD)
             ),
           ),
           Align(
@@ -102,7 +97,6 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
                     height:double.maxFinite,
                     width: double.infinity,
                     padding:
-                        // EdgeInsets.fromLTRB(0.05.sw, 0.025.sh, 0.05.sw, 0),
                     const EdgeInsets.all(20),
                     decoration: const BoxDecoration(
                       color: overlayContainerClr,
@@ -127,8 +121,9 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
                               },
                             ),
                             if (isMatching)
-                              const Align(
-                                alignment: Alignment.center,
+                              const Positioned(
+                                left: 0,
+                                top: 0,
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 10),
                                   child: AnimatedView(),
@@ -138,6 +133,7 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
                         ),
                         // const Spacer(),
                         // if (_canAuthenticate)
+                          SizeConstant.getHeightSpace(40),
                           CustomButton(
                             text: "Authenticate",
                             onTap: () {
@@ -146,7 +142,6 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
                               _fetchUsersAndMatchFace();
                             },
                           ),
-                        const SizedBox(height: 38),
                       ],
                     ),
                   ),
@@ -248,6 +243,8 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
 
   _matchFaces() async {
     bool faceMatched = false;
+    String refId = "";
+
     for (List user in users) {
       image1.bitmap = (user.first as UserModel).image;
       image1.imageType = regula.ImageType.PRINTED;
@@ -272,6 +269,11 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
         if (_similarity != "error" && double.parse(_similarity) > 90.00) {
           faceMatched = true;
           loggingUser = user.first;
+          log(loggingUser!.registeredOn.toString() ?? "", name: "MATCH!!!!!");
+          setState(() {
+            refId = loggingUser!.registeredOn.toString();
+          });
+
         } else {
           faceMatched = false;
         }
@@ -288,11 +290,11 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
         });
 
         if (mounted) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const MatchFoundScreen(),
-            ),
-          );
+          log(refId, name: "ID");
+          FirebaseFirestore.instance.collection("complaints").doc(refId).get().catchError((e){}).then((snap) {
+            log(snap.data().toString(), name:"DATA");
+            Get.to(MatchFoundScreen(data: snap.data(),));
+          });
         }
         break;
       }

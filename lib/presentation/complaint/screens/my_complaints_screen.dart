@@ -29,7 +29,6 @@ class MyComplaintsScreen extends StatelessWidget {
                 .snapshots(),
             builder: (_, snapshot) {
               if (snapshot.hasError) return Text('Error = ${snapshot.error}');
-
               if (snapshot.hasData) {
                 final docs = snapshot.data!.docs;
                 return ListView.separated(

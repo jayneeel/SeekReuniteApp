@@ -165,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: SingleChildScrollView(
                   physics: const NeverScrollableScrollPhysics(),
                   child: Column(
@@ -309,7 +309,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 90,
                             )),
                         onTap: () {
-                          Get.to(const MatchFoundScreen());
                         },
                       ),
                       const Text("Adults"),

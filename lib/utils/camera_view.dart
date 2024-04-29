@@ -68,11 +68,11 @@ class _CameraViewState extends State<CameraView> {
             ),
           ),
         ),
-        Text(
+        const Text(
           "Click here to Capture",
           style: TextStyle(
             fontSize: 14,
-            color: primaryWhite.withOpacity(0.6),
+            color: Color(0xFF0d0d0d),
           ),
         ),
       ],

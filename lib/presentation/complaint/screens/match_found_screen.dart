@@ -4,7 +4,8 @@ import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/widgets/custom_button.dart';
 
 class MatchFoundScreen extends StatelessWidget {
-  const MatchFoundScreen({super.key});
+  const MatchFoundScreen({super.key, required this.data});
+  final Map<String, dynamic>? data;
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +43,8 @@ class MatchFoundScreen extends StatelessWidget {
                     children: [
                       ClipRRect(
                           borderRadius: BorderRadius.circular(100),
-                          child: Image.asset(
-                            "assets/images/jayneel_pic.png",
+                          child: Image.network(
+                            "${data!['picture']}",
                             width: 300,
                             height: 200,
                           )),
@@ -62,25 +63,25 @@ class MatchFoundScreen extends StatelessWidget {
                     "Ref Id:",
                     style: TextStyle(fontFamily: ConstantFonts.poppinsBold, color: Color(0xFF0d0d0d), fontSize: 18),
                   ),
-                  const Text("13251564132"),
+                  Text("${data!['referenceId']}"),
                   SizeConstant.getHeightSpace(20),
                   const Text(
                     "Name:",
                     style: TextStyle(fontFamily: ConstantFonts.poppinsBold, color: Color(0xFF0d0d0d), fontSize: 18),
                   ),
-                  const Text("Jayneel Kanungo"),
+                  Text("${data!['name']}"),
                   SizeConstant.getHeightSpace(20),
                   const Text(
                     "Lost Since",
                     style: TextStyle(fontFamily: ConstantFonts.poppinsBold, color: Color(0xFF0d0d0d), fontSize: 18),
                   ),
-                  const Text("12/01/2024"),
+                  Text("${data!['lostSince']}"),
                   SizeConstant.getHeightSpace(20),
                   const Text(
                     "Address",
                     style: TextStyle(fontFamily: ConstantFonts.poppinsBold, color: Color(0xFF0d0d0d), fontSize: 18),
                   ),
-                  const Text("R-184, Girija Villa Sector 4, Airoli"),
+                  Text("${data!['address']}"),
                   SizeConstant.getHeightSpace(60),
                   const CustomButton(
                     text: "Nearby Police Station",
