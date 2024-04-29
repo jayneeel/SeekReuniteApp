@@ -87,6 +87,7 @@ class ComplaintController extends GetxController {
       "picture": photoUrl,
       "active": true,
       "fir_complaint": firUrl,
+      "city": city,
       "reward": reward,
       "contact": contact
     };
