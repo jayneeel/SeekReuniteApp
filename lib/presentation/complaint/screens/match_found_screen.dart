@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/widgets/custom_button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MatchFoundScreen extends StatelessWidget {
   const MatchFoundScreen({super.key, required this.data});
@@ -9,6 +11,7 @@ class MatchFoundScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate = DateFormat('dd/ MM/ yy').format(data!['lostSince'].toDate());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF38B338),
@@ -75,7 +78,7 @@ class MatchFoundScreen extends StatelessWidget {
                     "Lost Since",
                     style: TextStyle(fontFamily: ConstantFonts.poppinsBold, color: Color(0xFF0d0d0d), fontSize: 18),
                   ),
-                  Text("${data!['lostSince']}"),
+                  Text(formattedDate),
                   SizeConstant.getHeightSpace(20),
                   const Text(
                     "Address",
@@ -92,9 +95,12 @@ class MatchFoundScreen extends StatelessWidget {
                     color: Colors.brown,
                   ),
                   SizeConstant.getHeightSpace(10),
-                  const CustomButton(
+                  CustomButton(
+                    onTap: (){
+                      _makePhoneCall(data!['contact'] ?? "");
+                    },
                     text: "Contact Family",
-                    suffixIcon: Icon(
+                    suffixIcon: const Icon(
                       Icons.arrow_forward_rounded,
                       color: Colors.white,
                     ),
@@ -107,5 +113,13 @@ class MatchFoundScreen extends StatelessWidget {
         )
       ]),
     );
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber)async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 }

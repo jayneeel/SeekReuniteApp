@@ -218,7 +218,7 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
         for (var doc in snap.docs) {
           UserModel user = UserModel.fromJson(doc.data());
           double similarity = compareFaces(_faceFeatures!, user.faceFeatures!);
-          if (similarity >= 0.8 && similarity <= 1.5) {
+          if (similarity >= 0.6 && similarity <= 1.5) {
             users.add([user, similarity]);
           }
         }
@@ -276,6 +276,7 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
 
         } else {
           faceMatched = false;
+          log("FACE DIDN't MATCHED!",name: "result");
         }
       });
       if (faceMatched) {
@@ -370,10 +371,6 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
         //     });
       } else {
         setState(() => trialNumber++);
-        // _showFailureDialog(
-        //   title: "Redeem Failed",
-        //   description: "Face doesn't match. Please try again.",
-        // );
       }
     }
   }

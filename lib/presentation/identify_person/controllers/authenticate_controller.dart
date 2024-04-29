@@ -133,6 +133,7 @@ class AuthenticateController extends GetxController{
           trialNumber.value = 1;
           isMatching.value = false;
           log("FACE MATCHED!!!!!!!");
+          Get.snackbar("Person Identified", "Authenticated").show();
         break;
       }
     }
@@ -196,6 +197,7 @@ class AuthenticateController extends GetxController{
         log("***********************MATCH");
       } else {
         trialNumber.value++;
+
       }
     }
   }
