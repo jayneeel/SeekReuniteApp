@@ -97,7 +97,7 @@ class ComplaintController extends GetxController {
     await db.collection("complaints").doc(complaintDetailsMap['referenceId']).set(complaintDetailsMap);
     sendComplaintConfirmationMail(complaintDetailsMap);
     log("COMPLETED.................");
-    registerFace(picture, complaintDetailsMap);
+    await registerFace(picture, complaintDetailsMap);
     Get.dialog(
       AlertDialog(
         title: const Text('Complaint lodged!'),
@@ -132,8 +132,10 @@ class ComplaintController extends GetxController {
         .doc(userId)
         .set(user.toJson())
         .catchError((e) {
+          log("user data ${user.toJson().toString()}");
       log("Registration Error: $e");
     }).whenComplete(() {
+          log("user data ${user.toJson().toString()}");
       log("COMPLETEDDDDDDDDD!!!!!!!!");
     });
   }
