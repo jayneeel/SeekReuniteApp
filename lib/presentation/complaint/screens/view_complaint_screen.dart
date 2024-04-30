@@ -16,7 +16,7 @@ class ViewComplaintScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Complaint'),
+        title: const Text('Complaint'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
