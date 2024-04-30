@@ -8,14 +8,15 @@ import 'package:seek_reunite/presentation/complaint/controller/complaint_control
 import 'package:seek_reunite/widgets/custom_button.dart';
 
 class ViewComplaintScreen extends StatelessWidget {
-  const ViewComplaintScreen({super.key, required this.data});
+  const ViewComplaintScreen({super.key, required this.data, this.owned=true});
   final Map<String, dynamic> data;
+  final bool? owned;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Complaint'),
+        title: const Text('Complaint'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -200,6 +201,7 @@ class ViewComplaintScreen extends StatelessWidget {
                     ),
                   ),
                   SizeConstant.getHeightSpace(10),
+                  if(owned ?? true)
                   CustomButton(
                     text: "Close Complaint",
                     color: const Color(0xFF531342),

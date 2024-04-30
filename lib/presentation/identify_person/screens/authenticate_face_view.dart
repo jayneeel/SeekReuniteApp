@@ -232,10 +232,17 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
 
         _matchFaces();
       } else {
-        _showFailureDialog(
-          title: "No Users Registered",
-          description:
-              "Make sure users are registered first before Authenticating.",
+        // _showFailureDialog(
+        //   title: "No Users Registered",
+        //   description:
+        //       "Make sure users are registered first before Authenticating.",
+        // );
+        Get.snackbar(
+          "Face Didn't matched",
+          "Trying Again",
+          colorText: Colors.white,
+          backgroundColor: Colors.lightBlue,
+          icon: const Icon(Icons.add_alert),
         );
       }
     });
@@ -277,6 +284,13 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
         } else {
           faceMatched = false;
           log("FACE DIDN't MATCHED!",name: "result");
+          Get.snackbar(
+            "Face Didn't matched",
+            "Trying Again",
+            colorText: Colors.white,
+            backgroundColor: Colors.lightBlue,
+            icon: const Icon(Icons.add_alert),
+          );
         }
       });
       if (faceMatched) {
@@ -397,11 +411,6 @@ class _AuthenticateFaceViewState extends State<AuthenticateFaceView> {
         _matchFaces();
       } else {
         setState(() => trialNumber = 1);
-        _showFailureDialog(
-          title: "User Not Found",
-          description:
-              "User is not registered yet. Register first to authenticate.",
-        );
       }
     });
   }

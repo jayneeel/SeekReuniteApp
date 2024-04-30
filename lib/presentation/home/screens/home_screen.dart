@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,6 +10,7 @@ import 'package:seek_reunite/constants/constant_fonts.dart';
 import 'package:seek_reunite/constants/constant_size.dart';
 import 'package:seek_reunite/constants/contant_colors.dart';
 import 'package:seek_reunite/presentation/complaint/screens/add_complaint_screen.dart';
+import 'package:seek_reunite/presentation/complaint/screens/view_complaint_screen.dart';
 import 'package:seek_reunite/presentation/home/widgets/bottom_nav.dart';
 import 'package:seek_reunite/presentation/home/widgets/side_drawer.dart';
 
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -366,7 +366,9 @@ class RecentComplaintCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Get.to(ViewComplaintScreen(data: data, owned: false,));
+      },
       child: Stack(
         children: <Widget>[
           Container(
