@@ -1,8 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 
 class Helpers {
   static Future<DateTime?> selectDate(BuildContext context,
@@ -43,6 +43,12 @@ class Helpers {
   static Future<XFile?> capturePhoto() async {
     final picker = ImagePicker();
     return await picker.pickImage(source: ImageSource.camera);
+  }
+
+  String generatePasswordHash(String password) {
+    var bytes = utf8.encode(password); // Convert the password to bytes
+    var digest = sha256.convert(bytes); // Compute the SHA-256 hash
+    return digest.toString(); // Convert the hash to a string
   }
 }
 

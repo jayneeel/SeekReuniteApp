@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:seek_reunite/constants/constant_fonts.dart';
@@ -8,27 +6,17 @@ import 'package:seek_reunite/constants/contant_colors.dart';
 import 'package:seek_reunite/widgets/custom_button.dart';
 import 'package:seek_reunite/widgets/custom_text_field.dart';
 
-import '../home/screens/home_screen.dart';
+import 'controllers/auth_controller.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseFirestore db = FirebaseFirestore.instance;
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final CollectionReference users = db.collection('users');
+    final AuthController controller = Get.put(AuthController());
     var emailController = TextEditingController();
     var passwordController = TextEditingController();
 
-
-    void signInUser(TextEditingController emailController, TextEditingController passwordController, BuildContext context) async {
-      String email = emailController.text;
-      String password = passwordController.text;
-      await auth.signInWithEmailAndPassword(email: email, password: password);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sign In Successful!")));
-      Get.to(const HomeScreen());
-    }
 
     return Scaffold(
       body: SafeArea(
@@ -46,8 +34,7 @@ class SignInPage extends StatelessWidget {
               MyTextField(controller: passwordController, hintText: "password", obscureText: true, inputType: TextInputType.visiblePassword,),
               SizeConstant.getHeightSpace(20),
               CustomButton(text: "Sign In", onTap: (){
-                signInUser(emailController, passwordController, context);
-
+                controller.loginUser(emailController.text, passwordController.text);
               })
             ],
           ),
